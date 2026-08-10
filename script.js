@@ -1,4 +1,5 @@
-console.log("CORVEA SCRIPT IS RUNNING")
+console.log("CORVEA SCRIPT IS RUNNING");
+
 
 let selectedCategory = "skin";
 let selectedFile = null;
