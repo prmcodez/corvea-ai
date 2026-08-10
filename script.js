@@ -216,11 +216,9 @@ async function analyzeImage() {
     clearError();
 
     if (!selectedFile) {
-
         showError(
             "Please upload an image before starting the analysis."
         );
-
         return;
     }
 
@@ -228,7 +226,6 @@ async function analyzeImage() {
         document.querySelector(".analyze-button");
 
     analyzeButton.disabled = true;
-
     analyzeButton.textContent = "Analyzing...";
 
     try {
@@ -238,8 +235,7 @@ async function analyzeImage() {
 
         console.log("Loading MobileNet...");
 
-        const model =
-            await mobilenet.load();
+        const model = await mobilenet.load();
 
         console.log("MobileNet loaded.");
 
@@ -263,10 +259,17 @@ async function analyzeImage() {
         const possibleResult =
             document.querySelector(".possible-result");
 
+        const qualityBadge =
+            document.querySelector(".quality-badge");
+
+        const warnings =
+            document.querySelectorAll(".result-warning");
+
+        /*
+         * DETECTED VISUAL CHARACTERISTICS
+         */
+
         tags.innerHTML = "";
-
-        possibleResult.innerHTML = "";
-
 
         predictions
             .slice(0, 3)
@@ -283,39 +286,66 @@ async function analyzeImage() {
             });
 
 
-        if (predictions.length > 0) {
+        /*
+         * MODEL STATUS
+         */
 
-            const topPrediction =
-                predictions[0];
+        qualityBadge.textContent =
+            "General Vision Model";
 
-            const percentage =
-                Math.round(
-                    topPrediction.probability * 100
-                );
 
-            possibleResult.innerHTML = `
+        /*
+         * POSSIBLE EXPLANATIONS
+         *
+         * IMPORTANT:
+         * MobileNet is NOT a medical model.
+         */
 
-                <div>
+        possibleResult.innerHTML = `
+            <div>
+                <strong>
+                    Medical analysis unavailable
+                </strong>
 
-                    <strong>
-                        ${topPrediction.className}
-                    </strong>
+                <p>
+                    The current computer-vision model
+                    recognizes general image categories,
+                    not medical conditions.
+                </p>
+            </div>
+        `;
 
-                    <p>
-                        General image classification result
-                    </p>
 
-                </div>
+        /*
+         * UPDATE WARNING TEXT
+         */
 
-                <div class="confidence">
-                    ${percentage}%
-                </div>
+        warnings[0].textContent =
+            "These are general visual classifications from MobileNet. They are not medical findings.";
 
-            `;
 
-        }
+        warnings[1].textContent =
+            "Corvea does not currently use a medically trained model to identify skin conditions. These results must not be interpreted as a diagnosis.";
 
-    } catch (error) {
+
+        /*
+         * BIOLOGY SECTION
+         */
+
+        const biologyText =
+            document.querySelector(".biology-card > p");
+
+        biologyText.textContent =
+            "A dedicated health-focused model will be added in a later development stage. The completed system will connect observable visual characteristics with educational information about relevant biological processes.";
+
+
+        console.log(
+            "Corvea analysis completed."
+        );
+
+    }
+
+    catch (error) {
 
         console.error(
             "Analysis error:",
@@ -326,7 +356,9 @@ async function analyzeImage() {
             "The image could not be analyzed. Please try another image."
         );
 
-    } finally {
+    }
+
+    finally {
 
         analyzeButton.disabled = false;
 
@@ -334,10 +366,4 @@ async function analyzeImage() {
             "Analyze Image";
 
     }
-
 }
-
-
-/* INITIAL STATE */
-
-selectCategory("skin");
