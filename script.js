@@ -49,16 +49,12 @@ const results =
 // ============================================================
 
 const MODEL_PATHS = {
-
     skin: "./models/skin/model.json"
-
 };
 
 
 const LABEL_PATHS = {
-
     skin: "./models/skin/labels.json"
-
 };
 
 
@@ -942,14 +938,11 @@ async function analyzeImage() {
 
     } finally {
 
-
-        analyzeButton.disabled =
-            false;
-
+        analyzeButton.disabled = false;
 
         analyzeButton.textContent =
             "Analyze Image";
-
     }
-
 }
+
+console.log("Corvea JavaScript initialized.");
