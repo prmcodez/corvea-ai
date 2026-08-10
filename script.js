@@ -232,6 +232,16 @@ async function analyzeImage() {
         const image =
             document.getElementById("imagePreview");
 
+        console.log("Starting Corvea visual analysis...");
+
+        /*
+         * Load the general computer-vision model.
+         *
+         * IMPORTANT:
+         * MobileNet is NOT a medical model.
+         * Its predictions must not be treated as diagnoses.
+         */
+
         console.log("Loading MobileNet...");
 
         const model = await mobilenet.load();
@@ -245,6 +255,10 @@ async function analyzeImage() {
             "MobileNet predictions:",
             predictions
         );
+
+        /*
+         * SHOW RESULTS
+         */
 
         results.classList.remove("hidden");
 
@@ -266,24 +280,30 @@ async function analyzeImage() {
 
         /*
          * DETECTED VISUAL CHARACTERISTICS
+         *
+         * These are general computer-vision classifications,
+         * NOT medical findings.
          */
 
         tags.innerHTML = "";
 
-        predictions
-            .slice(0, 3)
-            .forEach(prediction => {
+        const imageTag =
+            document.createElement("span");
 
-                const tag =
-                    document.createElement("span");
+        imageTag.textContent =
+            "Image successfully analyzed";
 
-                tag.textContent =
-                    prediction.className;
+        tags.appendChild(imageTag);
 
-                tags.appendChild(tag);
+        const categoryTag =
+            document.createElement("span");
 
-            });
+        categoryTag.textContent =
+            "Category: " +
+            selectedCategory.charAt(0).toUpperCase() +
+            selectedCategory.slice(1);
 
+        tags.appendChild(categoryTag);
 
         /*
          * MODEL STATUS
@@ -292,40 +312,82 @@ async function analyzeImage() {
         qualityBadge.textContent =
             "General Vision Model";
 
-
         /*
          * POSSIBLE EXPLANATIONS
-         *
-         * IMPORTANT:
-         * MobileNet is NOT a medical model.
          */
 
-        possibleResult.innerHTML = `
-            <div>
-                <strong>
-                    Medical analysis unavailable
-                </strong>
+        let explanation = "";
+
+        if (selectedCategory === "skin") {
+
+            explanation = `
+                <strong>Educational interpretation</strong>
 
                 <p>
-                    The current computer-vision model
-                    recognizes general image categories,
-                    not medical conditions.
+                    Corvea can examine an uploaded image for
+                    general visual characteristics, but the
+                    current model cannot determine whether a
+                    skin condition is present.
                 </p>
-            </div>
-        `;
 
+                <p>
+                    Similar visible changes can occur with
+                    acne, eczema, irritation, inflammation,
+                    allergic reactions, infections, and other
+                    causes.
+                </p>
+            `;
+
+        } else if (selectedCategory === "teeth") {
+
+            explanation = `
+                <strong>Educational interpretation</strong>
+
+                <p>
+                    Corvea can examine an uploaded dental image,
+                    but the current model cannot determine
+                    whether a dental condition is present.
+                </p>
+
+                <p>
+                    Visible changes can have different causes,
+                    including plaque, staining, gum inflammation,
+                    irritation, or other oral health concerns.
+                </p>
+            `;
+
+        } else if (selectedCategory === "eyes") {
+
+            explanation = `
+                <strong>Educational interpretation</strong>
+
+                <p>
+                    Corvea can examine an uploaded eye image,
+                    but the current model cannot determine
+                    whether an eye condition is present.
+                </p>
+
+                <p>
+                    Visible redness, swelling, or irritation can
+                    have many different causes, so an image alone
+                    should not be treated as a diagnosis.
+                </p>
+
+            `;
+
+        }
+
+        possibleResult.innerHTML = explanation;
 
         /*
-         * UPDATE WARNING TEXT
+         * WARNINGS
          */
 
         warnings[0].textContent =
-            "These are general visual classifications from MobileNet. They are not medical findings.";
-
+            "The current computer-vision model provides general image classifications. These are not medical findings.";
 
         warnings[1].textContent =
-            "Corvea does not currently use a medically trained model to identify skin conditions. These results must not be interpreted as a diagnosis.";
-
+            "Corvea does not currently use a medically trained diagnostic model. These results must not be interpreted as a diagnosis.";
 
         /*
          * BIOLOGY SECTION
@@ -334,12 +396,25 @@ async function analyzeImage() {
         const biologyText =
             document.querySelector(".biology-card > p");
 
-        biologyText.textContent =
-            "A dedicated health-focused model will be added in a later development stage. The completed system will connect observable visual characteristics with educational information about relevant biological processes.";
+        if (selectedCategory === "skin") {
 
+            biologyText.textContent =
+                "Visible skin changes can be influenced by biological processes involving the skin barrier, immune system, inflammation, follicles, microorganisms, and other tissues.";
+
+        } else if (selectedCategory === "teeth") {
+
+            biologyText.textContent =
+                "Visible dental changes can be influenced by plaque, bacteria, inflammation, tooth structure, saliva, and the tissues surrounding the teeth.";
+
+        } else if (selectedCategory === "eyes") {
+
+            biologyText.textContent =
+                "Visible eye changes can involve blood vessels, inflammation, irritation, the tear film, and tissues on or around the eye.";
+
+        }
 
         console.log(
-            "Corvea analysis completed."
+            "Corvea educational analysis completed."
         );
 
     }
