@@ -264,18 +264,38 @@
                     JPG, JPEG, or PNG • Maximum 10 MB
                 </span>
 
-                <input
-                    type="file"
-                    id="imageInput"
-                    accept="image/jpeg,image/png,image/jpg"
-                    hidden
-                >
+                <div class="upload-buttons">
 
-                <button
-                    class="secondary-button"
-                    onclick="document.getElementById('imageInput').click()">
-                    Choose Image
-                </button>
+    <button
+        type="button"
+        class="secondary-button"
+        onclick="document.getElementById('cameraInput').click()">
+        📷 Take Photo
+    </button>
+
+    <button
+        type="button"
+        class="secondary-button"
+        onclick="document.getElementById('imageInput').click()">
+        🖼️ Choose Image
+    </button>
+
+</div>
+
+<input
+    type="file"
+    id="cameraInput"
+    accept="image/*"
+    capture="environment"
+    hidden
+>
+
+<input
+    type="file"
+    id="imageInput"
+    accept="image/jpeg,image/png,image/jpg"
+    hidden
+>
 
             </div>
 
