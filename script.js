@@ -1,136 +1,242 @@
-console.log("CORVEA SCRIPT VERSION 2");
+console.log("CORVEA HEALTH MODEL VERSION 1");
+
+
+// ============================================================
+// MODEL VARIABLES
+// ============================================================
+
+let skinModel = null;
+let skinLabels = null;
 
 let selectedCategory = "skin";
 let selectedFile = null;
 
-const imageInput = document.getElementById("imageInput");
-const uploadArea = document.getElementById("uploadArea");
-const imagePreview = document.getElementById("imagePreview");
+
+// ============================================================
+// DOM VARIABLES
+// ============================================================
+
+const imageInput =
+    document.getElementById("imageInput");
+
+const cameraInput =
+    document.getElementById("cameraInput");
+
+const uploadArea =
+    document.getElementById("uploadArea");
+
+const imagePreview =
+    document.getElementById("imagePreview");
+
 const imagePreviewContainer =
     document.getElementById("imagePreviewContainer");
 
-const fileName = document.getElementById("fileName");
-const fileSize = document.getElementById("fileSize");
+const fileName =
+    document.getElementById("fileName");
 
-const uploadError = document.getElementById("uploadError");
-const results = document.getElementById("results");
+const fileSize =
+    document.getElementById("fileSize");
+
+const uploadError =
+    document.getElementById("uploadError");
+
+const results =
+    document.getElementById("results");
 
 
-/* CATEGORY SELECTION */
+// ============================================================
+// MODEL PATHS
+// ============================================================
+
+const MODEL_PATHS = {
+
+    skin:
+        "./models/skin/model.json"
+
+};
+
+const LABEL_PATHS = {
+
+    skin:
+        "./models/skin/labels.json"
+
+};
+
+
+// ============================================================
+// CATEGORY SELECTION
+// ============================================================
 
 function selectCategory(category) {
 
     selectedCategory = category;
 
-    document.querySelectorAll(".category-option")
+    document
+        .querySelectorAll(".category-option")
         .forEach(button => {
 
             button.classList.remove("active");
 
-            if (button.dataset.category === category) {
+            if (
+                button.dataset.category === category
+            ) {
+
                 button.classList.add("active");
+
             }
 
         });
 
-    document.getElementById("analyze").scrollIntoView({
-        behavior: "smooth"
-    });
+    document
+        .getElementById("analyze")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
 }
 
 
-/* SCROLL */
+// ============================================================
+// SCROLL TO ANALYSIS
+// ============================================================
 
 function scrollToAnalysis() {
 
-    document.getElementById("analyze").scrollIntoView({
-        behavior: "smooth"
-    });
+    document
+        .getElementById("analyze")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
 
 }
 
 
-/* FILE INPUT */
+// ============================================================
+// FILE INPUT
+// ============================================================
 
-imageInput.addEventListener("change", function(event) {
+imageInput.addEventListener(
+    "change",
+    function (event) {
 
-    const file = event.target.files[0];
+        const file =
+            event.target.files[0];
 
-    if (file) {
-        processFile(file);
+        if (file) {
+
+            processFile(file);
+
+        }
+
     }
+);
 
-});
 
-const cameraInput =
-    document.getElementById("cameraInput");
+// ============================================================
+// CAMERA INPUT
+// ============================================================
 
-cameraInput.addEventListener("change", function(event) {
+cameraInput.addEventListener(
+    "change",
+    function (event) {
 
-    const file = event.target.files[0];
+        const file =
+            event.target.files[0];
 
-    if (file) {
-        processFile(file);
+        if (file) {
+
+            processFile(file);
+
+        }
+
     }
-
-});
-
-
-/* DRAG AND DROP */
-
-uploadArea.addEventListener("dragover", function(event) {
-
-    event.preventDefault();
-
-    uploadArea.classList.add("dragover");
-
-});
+);
 
 
-uploadArea.addEventListener("dragleave", function() {
+// ============================================================
+// DRAG AND DROP
+// ============================================================
 
-    uploadArea.classList.remove("dragover");
+uploadArea.addEventListener(
+    "dragover",
+    function (event) {
 
-});
+        event.preventDefault();
 
+        uploadArea.classList.add(
+            "dragover"
+        );
 
-uploadArea.addEventListener("drop", function(event) {
-
-    event.preventDefault();
-
-    uploadArea.classList.remove("dragover");
-
-    const file = event.dataTransfer.files[0];
-
-    if (file) {
-        processFile(file);
     }
+);
 
-});
+
+uploadArea.addEventListener(
+    "dragleave",
+    function () {
+
+        uploadArea.classList.remove(
+            "dragover"
+        );
+
+    }
+);
 
 
-/* PROCESS IMAGE */
+uploadArea.addEventListener(
+    "drop",
+    function (event) {
+
+        event.preventDefault();
+
+        uploadArea.classList.remove(
+            "dragover"
+        );
+
+        const file =
+            event.dataTransfer.files[0];
+
+        if (file) {
+
+            processFile(file);
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// PROCESS IMAGE
+// ============================================================
 
 function processFile(file) {
 
     clearError();
 
     const allowedTypes = [
+
         "image/jpeg",
         "image/png",
-        "image/jpg"
+        "image/jpg",
+        "image/webp"
+
     ];
 
-    const maxSize = 10 * 1024 * 1024;
+    const maxSize =
+        10 * 1024 * 1024;
+
 
     if (!allowedTypes.includes(file.type)) {
 
         showError(
-            "Please upload a JPG, JPEG, or PNG image."
+            "Please upload a JPG, JPEG, PNG, or WebP image."
         );
 
         return;
+
     }
+
 
     if (file.size > maxSize) {
 
@@ -139,76 +245,116 @@ function processFile(file) {
         );
 
         return;
+
     }
+
 
     selectedFile = file;
 
-    fileName.textContent = file.name;
+    fileName.textContent =
+        file.name;
 
     fileSize.textContent =
         formatFileSize(file.size);
 
-    const reader = new FileReader();
 
-    reader.onload = function(event) {
+    const reader =
+        new FileReader();
 
-        imagePreview.src = event.target.result;
 
-        imagePreviewContainer.classList.remove("hidden");
+    reader.onload =
+        function (event) {
 
-        uploadArea.classList.add("hidden");
+            imagePreview.src =
+                event.target.result;
 
-    };
+            imagePreviewContainer
+                .classList
+                .remove("hidden");
+
+            uploadArea
+                .classList
+                .add("hidden");
+
+        };
+
 
     reader.readAsDataURL(file);
 
 }
 
 
-/* REMOVE IMAGE */
+// ============================================================
+// REMOVE IMAGE
+// ============================================================
 
 function removeImage() {
 
     selectedFile = null;
 
     imageInput.value = "";
+
     cameraInput.value = "";
 
     imagePreview.src = "";
 
-    imagePreviewContainer.classList.add("hidden");
+    imagePreviewContainer
+        .classList
+        .add("hidden");
 
-    uploadArea.classList.remove("hidden");
+    uploadArea
+        .classList
+        .remove("hidden");
 
-    results.classList.add("hidden");
+    results
+        .classList
+        .add("hidden");
 
 }
 
 
-/* FILE SIZE */
+// ============================================================
+// FILE SIZE
+// ============================================================
 
 function formatFileSize(bytes) {
 
     if (bytes < 1024) {
+
         return bytes + " B";
+
     }
+
 
     if (bytes < 1024 * 1024) {
-        return (bytes / 1024).toFixed(1) + " KB";
+
+        return (
+            bytes / 1024
+        ).toFixed(1) + " KB";
+
     }
 
-    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+
+    return (
+        bytes /
+        (1024 * 1024)
+    ).toFixed(1) + " MB";
 
 }
 
 
-/* ERROR */
+// ============================================================
+// ERROR HANDLING
+// ============================================================
 
 function showError(message) {
 
-    uploadError.textContent = message;
+    uploadError.textContent =
+        message;
 
-    uploadError.classList.remove("hidden");
+    uploadError
+        .classList
+        .remove("hidden");
 
 }
 
@@ -217,241 +363,619 @@ function clearError() {
 
     uploadError.textContent = "";
 
-    uploadError.classList.add("hidden");
+    uploadError
+        .classList
+        .add("hidden");
 
 }
 
 
-/* ANALYSIS */
+// ============================================================
+// LOAD SKIN MODEL
+// ============================================================
+
+async function loadSkinModel() {
+
+    if (skinModel !== null) {
+
+        return skinModel;
+
+    }
+
+
+    console.log(
+        "Loading Corvea skin model..."
+    );
+
+
+    skinModel =
+        await tf.loadLayersModel(
+            MODEL_PATHS.skin
+        );
+
+
+    console.log(
+        "Corvea skin model loaded."
+    );
+
+
+    console.log(
+        "Model input shape:",
+        skinModel.inputs[0].shape
+    );
+
+
+    console.log(
+        "Model output shape:",
+        skinModel.outputs[0].shape
+    );
+
+
+    return skinModel;
+
+}
+
+
+// ============================================================
+// LOAD LABELS
+// ============================================================
+
+async function loadSkinLabels() {
+
+    if (skinLabels !== null) {
+
+        return skinLabels;
+
+    }
+
+
+    console.log(
+        "Loading skin labels..."
+    );
+
+
+    const response =
+        await fetch(
+            LABEL_PATHS.skin
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Could not load labels.json"
+        );
+
+    }
+
+
+    skinLabels =
+        await response.json();
+
+
+    console.log(
+        "Skin labels loaded:",
+        skinLabels
+    );
+
+
+    return skinLabels;
+
+}
+
+
+// ============================================================
+// PREPROCESS IMAGE
+// ============================================================
+
+function preprocessImage(image) {
+
+    return tf.tidy(() => {
+
+        let tensor =
+            tf.browser
+                .fromPixels(image);
+
+
+        tensor =
+            tf.image.resizeBilinear(
+                tensor,
+                [224, 224]
+            );
+
+
+        tensor =
+            tensor
+                .toFloat()
+                .div(255.0);
+
+
+        tensor =
+            tensor.expandDims(0);
+
+
+        return tensor;
+
+    });
+
+}
+
+
+// ============================================================
+// RUN SKIN MODEL
+// ============================================================
+
+async function runSkinModel(image) {
+
+    const model =
+        await loadSkinModel();
+
+
+    const labels =
+        await loadSkinLabels();
+
+
+    const input =
+        preprocessImage(image);
+
+
+    let output = null;
+
+
+    try {
+
+        output =
+            model.predict(input);
+
+
+        const probabilities =
+            await output.data();
+
+
+        const resultsArray =
+            Array.from(
+                probabilities
+            );
+
+
+        const predictions =
+            resultsArray
+                .map(
+                    (probability, index) => ({
+
+                        index:
+                            index,
+
+                        label:
+                            labels[index] ||
+                            `Class ${index}`,
+
+                        probability:
+                            probability
+
+                    })
+                )
+                .sort(
+                    (a, b) =>
+                        b.probability -
+                        a.probability
+                );
+
+
+        return predictions;
+
+
+    } finally {
+
+        input.dispose();
+
+
+        if (
+            output &&
+            typeof output.dispose ===
+            "function"
+        ) {
+
+            output.dispose();
+
+        }
+
+    }
+
+}
+
+
+// ============================================================
+// DISPLAY MODEL RESULTS
+// ============================================================
+
+function displaySkinResults(predictions) {
+
+    const tags =
+        document.querySelector(
+            ".result-card .tags"
+        );
+
+
+    const possibleResult =
+        document.querySelector(
+            ".possible-result"
+        );
+
+
+    const qualityBadge =
+        document.querySelector(
+            ".quality-badge"
+        );
+
+
+    const warnings =
+        document.querySelectorAll(
+            ".result-warning"
+        );
+
+
+    tags.innerHTML = "";
+
+
+    // --------------------------------------------------------
+    // CATEGORY
+    // --------------------------------------------------------
+
+    const categoryTag =
+        document.createElement("span");
+
+    categoryTag.textContent =
+        "Category: Skin";
+
+    tags.appendChild(
+        categoryTag
+    );
+
+
+    // --------------------------------------------------------
+    // MODEL STATUS
+    // --------------------------------------------------------
+
+    qualityBadge.textContent =
+        "Corvea Skin Model";
+
+
+    // --------------------------------------------------------
+    // TOP PREDICTIONS
+    // --------------------------------------------------------
+
+    const topPredictions =
+        predictions.slice(0, 3);
+
+
+    topPredictions.forEach(
+        prediction => {
+
+            const tag =
+                document.createElement("span");
+
+
+            const percentage =
+                (
+                    prediction.probability *
+                    100
+                ).toFixed(1);
+
+
+            tag.textContent =
+                `${prediction.label} ${percentage}%`;
+
+
+            tags.appendChild(tag);
+
+        }
+    );
+
+
+    // --------------------------------------------------------
+    // MAIN RESULT
+    // --------------------------------------------------------
+
+    const top =
+        predictions[0];
+
+
+    if (!top) {
+
+        possibleResult.innerHTML = `
+            <strong>
+                No result available
+            </strong>
+
+            <p>
+                The model did not return a usable
+                classification.
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+    const confidence =
+        (
+            top.probability *
+            100
+        ).toFixed(1);
+
+
+    possibleResult.innerHTML = `
+
+        <div>
+
+            <strong>
+                ${top.label}
+            </strong>
+
+            <p>
+                Model confidence:
+                ${confidence}%
+            </p>
+
+        </div>
+
+    `;
+
+
+    // --------------------------------------------------------
+    // SAFETY WARNINGS
+    // --------------------------------------------------------
+
+    if (warnings.length >= 2) {
+
+        warnings[0].textContent =
+            "The model provides a computer-vision classification based on the image. This is not a medical finding.";
+
+        warnings[1].textContent =
+            "This result is educational and must not be interpreted as a diagnosis. A qualified healthcare professional should evaluate health concerns.";
+
+    }
+
+}
+
+
+// ============================================================
+// UPDATE BIOLOGY SECTION
+// ============================================================
+
+function updateBiologySection(
+    prediction
+) {
+
+    const biologyText =
+        document.querySelector(
+            ".biology-card > p"
+        );
+
+
+    if (!biologyText) {
+
+        return;
+
+    }
+
+
+    const label =
+        prediction.label.toLowerCase();
+
+
+    if (
+        label.includes("acne")
+    ) {
+
+        biologyText.textContent =
+            "Acne can involve hair follicles, sebum production, changes in follicular cells, inflammation, and interactions with microorganisms associated with the skin.";
+
+    }
+
+    else if (
+        label.includes("eczema")
+    ) {
+
+        biologyText.textContent =
+            "Eczema can involve disruption of the skin barrier and immune-system activity, which may contribute to inflammation, dryness, itching, and visible skin changes.";
+
+    }
+
+    else if (
+        label.includes("psoriasis")
+    ) {
+
+        biologyText.textContent =
+            "Psoriasis involves immune-system activity that can increase inflammation and accelerate the growth cycle of skin cells, contributing to visible plaques and scaling.";
+
+    }
+
+    else if (
+        label.includes("melanoma")
+    ) {
+
+        biologyText.textContent =
+            "Melanoma involves abnormal growth of melanocytes, the cells responsible for producing melanin. Changes in a pigmented lesion can have many possible causes and require professional evaluation.";
+
+    }
+
+    else {
+
+        biologyText.textContent =
+            "Visible skin changes can be influenced by the skin barrier, immune responses, inflammation, follicles, microorganisms, pigmentation, and other biological processes.";
+
+    }
+
+}
+
+
+// ============================================================
+// ANALYZE IMAGE
+// ============================================================
 
 async function analyzeImage() {
 
     clearError();
 
+
     if (!selectedFile) {
+
         showError(
             "Please upload an image before starting the analysis."
         );
+
         return;
+
     }
 
+
     const analyzeButton =
-        document.querySelector(".analyze-button");
+        document.querySelector(
+            ".analyze-button"
+        );
+
 
     analyzeButton.disabled = true;
-    analyzeButton.textContent = "Analyzing...";
+
+    analyzeButton.textContent =
+        "Analyzing...";
+
 
     try {
 
+        console.log(
+            "Starting Corvea health analysis..."
+        );
+
+
+        // ----------------------------------------------------
+        // CHECK CATEGORY
+        // ----------------------------------------------------
+
+        if (
+            selectedCategory !==
+            "skin"
+        ) {
+
+            throw new Error(
+                "The health model currently supports skin images only. Teeth and eye models have not been connected yet."
+            );
+
+        }
+
+
+        // ----------------------------------------------------
+        // GET IMAGE
+        // ----------------------------------------------------
+
         const image =
-            document.getElementById("imagePreview");
+            document.getElementById(
+                "imagePreview"
+            );
 
-        console.log("Starting Corvea visual analysis...");
 
-        /*
-         * Load the general computer-vision model.
-         *
-         * IMPORTANT:
-         * MobileNet is NOT a medical model.
-         * Its predictions must not be treated as diagnoses.
-         */
+        if (!image.complete) {
 
-        console.log("Loading MobileNet...");
+            await new Promise(
+                resolve => {
 
-        const model = await mobilenet.load();
+                    image.onload =
+                        resolve;
 
-        console.log("MobileNet loaded.");
+                }
+            );
+
+        }
+
+
+        // ----------------------------------------------------
+        // RUN SKIN MODEL
+        // ----------------------------------------------------
 
         const predictions =
-            await model.classify(image);
+            await runSkinModel(
+                image
+            );
+
 
         console.log(
-            "MobileNet predictions:",
+            "Corvea model predictions:",
             predictions
         );
 
-        /*
-         * SHOW RESULTS
-         */
 
-        results.classList.remove("hidden");
+        // ----------------------------------------------------
+        // SHOW RESULTS
+        // ----------------------------------------------------
+
+        results
+            .classList
+            .remove("hidden");
+
 
         results.scrollIntoView({
             behavior: "smooth"
         });
 
-        const tags =
-            document.querySelector(".result-card .tags");
 
-        const possibleResult =
-            document.querySelector(".possible-result");
+        // ----------------------------------------------------
+        // DISPLAY RESULTS
+        // ----------------------------------------------------
 
-        const qualityBadge =
-            document.querySelector(".quality-badge");
+        displaySkinResults(
+            predictions
+        );
 
-        const warnings =
-            document.querySelectorAll(".result-warning");
 
-        /*
-         * DETECTED VISUAL CHARACTERISTICS
-         *
-         * These are general computer-vision classifications,
-         * NOT medical findings.
-         */
+        // ----------------------------------------------------
+        // BIOLOGY
+        // ----------------------------------------------------
 
-        tags.innerHTML = "";
+        if (
+            predictions.length > 0
+        ) {
 
-        const imageTag =
-            document.createElement("span");
-
-        imageTag.textContent =
-            "Image successfully analyzed";
-
-        tags.appendChild(imageTag);
-
-        const categoryTag =
-            document.createElement("span");
-
-        categoryTag.textContent =
-            "Category: " +
-            selectedCategory.charAt(0).toUpperCase() +
-            selectedCategory.slice(1);
-
-        tags.appendChild(categoryTag);
-
-        /*
-         * MODEL STATUS
-         */
-
-        qualityBadge.textContent =
-            "General Vision Model";
-
-        /*
-         * POSSIBLE EXPLANATIONS
-         */
-
-        let explanation = "";
-
-        if (selectedCategory === "skin") {
-
-            explanation = `
-                <strong>Educational interpretation</strong>
-
-                <p>
-                    Corvea can examine an uploaded image for
-                    general visual characteristics, but the
-                    current model cannot determine whether a
-                    skin condition is present.
-                </p>
-
-                <p>
-                    Similar visible changes can occur with
-                    acne, eczema, irritation, inflammation,
-                    allergic reactions, infections, and other
-                    causes.
-                </p>
-            `;
-
-        } else if (selectedCategory === "teeth") {
-
-            explanation = `
-                <strong>Educational interpretation</strong>
-
-                <p>
-                    Corvea can examine an uploaded dental image,
-                    but the current model cannot determine
-                    whether a dental condition is present.
-                </p>
-
-                <p>
-                    Visible changes can have different causes,
-                    including plaque, staining, gum inflammation,
-                    irritation, or other oral health concerns.
-                </p>
-            `;
-
-        } else if (selectedCategory === "eyes") {
-
-            explanation = `
-                <strong>Educational interpretation</strong>
-
-                <p>
-                    Corvea can examine an uploaded eye image,
-                    but the current model cannot determine
-                    whether an eye condition is present.
-                </p>
-
-                <p>
-                    Visible redness, swelling, or irritation can
-                    have many different causes, so an image alone
-                    should not be treated as a diagnosis.
-                </p>
-
-            `;
+            updateBiologySection(
+                predictions[0]
+            );
 
         }
 
-        possibleResult.innerHTML = explanation;
-
-        /*
-         * WARNINGS
-         */
-
-        warnings[0].textContent =
-            "The current computer-vision model provides general image classifications. These are not medical findings.";
-
-        warnings[1].textContent =
-            "Corvea does not currently use a medically trained diagnostic model. These results must not be interpreted as a diagnosis.";
-
-        /*
-         * BIOLOGY SECTION
-         */
-
-        const biologyText =
-            document.querySelector(".biology-card > p");
-
-        if (selectedCategory === "skin") {
-
-            biologyText.textContent =
-                "Visible skin changes can be influenced by biological processes involving the skin barrier, immune system, inflammation, follicles, microorganisms, and other tissues.";
-
-        } else if (selectedCategory === "teeth") {
-
-            biologyText.textContent =
-                "Visible dental changes can be influenced by plaque, bacteria, inflammation, tooth structure, saliva, and the tissues surrounding the teeth.";
-
-        } else if (selectedCategory === "eyes") {
-
-            biologyText.textContent =
-                "Visible eye changes can involve blood vessels, inflammation, irritation, the tear film, and tissues on or around the eye.";
-
-        }
 
         console.log(
-            "Corvea educational analysis completed."
+            "Corvea health analysis completed."
         );
 
     }
 
+
     catch (error) {
 
         console.error(
-            "Analysis error:",
+            "Corvea analysis error:",
             error
         );
 
+
         showError(
+            error.message ||
             "The image could not be analyzed. Please try another image."
         );
 
     }
 
+
     finally {
 
-        analyzeButton.disabled = false;
+        analyzeButton.disabled =
+            false;
 
         analyzeButton.textContent =
             "Analyze Image";
 
     }
+
 }
