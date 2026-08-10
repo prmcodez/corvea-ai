@@ -42,6 +42,7 @@ function selectCategory(category) {
             if (button.dataset.category === category) {
                 button.classList.add("active");
             }
+
         });
 
     document
@@ -64,6 +65,7 @@ function scrollToAnalysis() {
         .scrollIntoView({
             behavior: "smooth"
         });
+
 }
 
 // ============================================================
@@ -143,7 +145,6 @@ function processFile(file) {
 
     const maxSize = 10 * 1024 * 1024;
 
-    // Check file type
     if (!allowedTypes.includes(file.type)) {
 
         showError(
@@ -153,7 +154,6 @@ function processFile(file) {
         return;
     }
 
-    // Check file size
     if (file.size > maxSize) {
 
         showError(
@@ -174,8 +174,7 @@ function processFile(file) {
 
     reader.onload = function (event) {
 
-        imagePreview.src =
-            event.target.result;
+        imagePreview.src = event.target.result;
 
         imagePreviewContainer
             .classList
@@ -222,7 +221,6 @@ function removeImage() {
 
     clearError();
 
-    console.log("Image removed.");
 }
 
 // ============================================================
@@ -240,12 +238,14 @@ function formatFileSize(bytes) {
         return (
             bytes / 1024
         ).toFixed(1) + " KB";
+
     }
 
     return (
         bytes /
         (1024 * 1024)
     ).toFixed(1) + " MB";
+
 }
 
 // ============================================================
@@ -281,6 +281,7 @@ function getImageAsBase64() {
     return new Promise((resolve, reject) => {
 
         if (!selectedFile) {
+
             reject(
                 new Error("No image selected.")
             );
@@ -296,6 +297,7 @@ function getImageAsBase64() {
                 reader.result.split(",")[1];
 
             resolve(base64);
+
         };
 
         reader.onerror = function () {
@@ -311,6 +313,7 @@ function getImageAsBase64() {
         reader.readAsDataURL(selectedFile);
 
     });
+
 }
 
 // ============================================================
@@ -335,11 +338,14 @@ function displayResults(data) {
         document.querySelector(".biology-card > p");
 
     const biologyMechanism =
-        document.querySelector(".biology-grid div:first-child p");
+        document.querySelector(
+            ".biology-grid div:first-child p"
+        );
 
     const biologyAppearance =
-        document.querySelector(".biology-grid div:last-child p");
-
+        document.querySelector(
+            ".biology-grid div:last-child p"
+        );
 
     // --------------------------------------------------------
     // VISUAL CHARACTERISTICS
@@ -348,7 +354,7 @@ function displayResults(data) {
     tags.innerHTML = "";
 
     if (
-        data.visualCharacteristics &&
+        Array.isArray(data.visualCharacteristics) &&
         data.visualCharacteristics.length > 0
     ) {
 
@@ -358,8 +364,7 @@ function displayResults(data) {
                 const tag =
                     document.createElement("span");
 
-                tag.textContent =
-                    characteristic;
+                tag.textContent = characteristic;
 
                 tags.appendChild(tag);
 
@@ -372,11 +377,11 @@ function displayResults(data) {
             document.createElement("span");
 
         tag.textContent =
-            "No characteristics identified";
+            "No specific characteristics identified";
 
         tags.appendChild(tag);
-    }
 
+    }
 
     // --------------------------------------------------------
     // POSSIBLE EXPLANATION
@@ -385,9 +390,7 @@ function displayResults(data) {
     if (data.possibleExplanation) {
 
         possibleResult.innerHTML = `
-
             <div>
-
                 <strong>
                     ${escapeHTML(
                         data.possibleExplanation
@@ -396,19 +399,15 @@ function displayResults(data) {
 
                 <p>
                     Educational possibility based
-                    on the submitted information.
+                    on the submitted image and information.
                 </p>
-
             </div>
-
         `;
 
     } else {
 
         possibleResult.innerHTML = `
-
             <div>
-
                 <strong>
                     No specific explanation available
                 </strong>
@@ -417,12 +416,10 @@ function displayResults(data) {
                     The AI could not provide a useful
                     educational explanation.
                 </p>
-
             </div>
-
         `;
-    }
 
+    }
 
     // --------------------------------------------------------
     // BADGE
@@ -431,17 +428,23 @@ function displayResults(data) {
     qualityBadge.textContent =
         "AI Educational Analysis";
 
-
     // --------------------------------------------------------
     // WARNINGS
     // --------------------------------------------------------
 
-    warnings[0].textContent =
-        "AI-generated observations may be incorrect and should not be treated as confirmed medical findings.";
+    if (warnings[0]) {
 
-    warnings[1].textContent =
-        "Corvea is an educational project, not a medical diagnostic service.";
+        warnings[0].textContent =
+            "AI-generated observations may be incorrect and should not be treated as confirmed medical findings.";
 
+    }
+
+    if (warnings[1]) {
+
+        warnings[1].textContent =
+            "Corvea is an educational project, not a medical diagnostic service.";
+
+    }
 
     // --------------------------------------------------------
     // BIOLOGY
@@ -451,20 +454,22 @@ function displayResults(data) {
 
         biologyText.textContent =
             data.biology;
+
     }
 
     if (data.biologicalMechanisms) {
 
         biologyMechanism.textContent =
             data.biologicalMechanisms;
+
     }
 
     if (data.whyItLooksThisWay) {
 
         biologyAppearance.textContent =
             data.whyItLooksThisWay;
-    }
 
+    }
 
     // --------------------------------------------------------
     // SHOW RESULTS
@@ -475,6 +480,7 @@ function displayResults(data) {
     results.scrollIntoView({
         behavior: "smooth"
     });
+
 }
 
 // ============================================================
@@ -486,10 +492,10 @@ function escapeHTML(text) {
     const div =
         document.createElement("div");
 
-    div.textContent =
-        text;
+    div.textContent = text;
 
     return div.innerHTML;
+
 }
 
 // ============================================================
@@ -513,7 +519,6 @@ async function analyzeImage() {
         return;
     }
 
-
     // --------------------------------------------------------
     // GET BUTTON
     // --------------------------------------------------------
@@ -521,12 +526,10 @@ async function analyzeImage() {
     const analyzeButton =
         document.querySelector(".analyze-button");
 
-
     analyzeButton.disabled = true;
 
     analyzeButton.textContent =
         "Preparing image...";
-
 
     try {
 
@@ -538,7 +541,6 @@ async function analyzeImage() {
             "Category:",
             selectedCategory
         );
-
 
         // ----------------------------------------------------
         // GET USER INFORMATION
@@ -559,7 +561,6 @@ async function analyzeImage() {
                 "symptoms"
             ).value;
 
-
         // ----------------------------------------------------
         // CONVERT IMAGE
         // ----------------------------------------------------
@@ -570,26 +571,16 @@ async function analyzeImage() {
         const image =
             await getImageAsBase64();
 
-
         console.log(
             "Image successfully prepared."
         );
 
-
         // ----------------------------------------------------
-        // BACKEND CONNECTION
-        // ----------------------------------------------------
-        //
-        // IMPORTANT:
-        // This URL will be connected to your backend.
-        //
-        // Do NOT put an AI API key in this file.
-        //
+        // SEND TO BACKEND
         // ----------------------------------------------------
 
         analyzeButton.textContent =
             "Analyzing image...";
-
 
         const response =
             await fetch(
@@ -620,9 +611,9 @@ async function analyzeImage() {
                             symptoms
 
                     })
+
                 }
             );
-
 
         // ----------------------------------------------------
         // CHECK RESPONSE
@@ -633,25 +624,22 @@ async function analyzeImage() {
             throw new Error(
                 "The AI analysis service is not connected yet."
             );
-        }
 
+        }
 
         const data =
             await response.json();
-
 
         console.log(
             "AI response:",
             data
         );
 
-
         // ----------------------------------------------------
-        // DISPLAY
+        // DISPLAY RESULTS
         // ----------------------------------------------------
 
         displayResults(data);
-
 
     } catch (error) {
 
@@ -660,21 +648,20 @@ async function analyzeImage() {
             error
         );
 
-
         showError(
             error.message ||
             "The image could not be analyzed. Please try again."
         );
 
-
     } finally {
 
-        analyzeButton.disabled =
-            false;
+        analyzeButton.disabled = false;
 
         analyzeButton.textContent =
             "Analyze Image";
+
     }
+
 }
 
 // ============================================================
