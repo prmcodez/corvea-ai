@@ -14,9 +14,7 @@ const uploadError = document.getElementById("uploadError");
 const results = document.getElementById("results");
 
 
-/* -------------------------
-   CATEGORY SELECTION
-------------------------- */
+/* CATEGORY SELECTION */
 
 function selectCategory(category) {
 
@@ -39,9 +37,7 @@ function selectCategory(category) {
 }
 
 
-/* -------------------------
-   SCROLL
-------------------------- */
+/* SCROLL */
 
 function scrollToAnalysis() {
 
@@ -52,9 +48,7 @@ function scrollToAnalysis() {
 }
 
 
-/* -------------------------
-   FILE INPUT
-------------------------- */
+/* FILE INPUT */
 
 imageInput.addEventListener("change", function(event) {
 
@@ -67,9 +61,7 @@ imageInput.addEventListener("change", function(event) {
 });
 
 
-/* -------------------------
-   DRAG AND DROP
-------------------------- */
+/* DRAG AND DROP */
 
 uploadArea.addEventListener("dragover", function(event) {
 
@@ -102,9 +94,7 @@ uploadArea.addEventListener("drop", function(event) {
 });
 
 
-/* -------------------------
-   PROCESS IMAGE
-------------------------- */
+/* PROCESS IMAGE */
 
 function processFile(file) {
 
@@ -118,7 +108,6 @@ function processFile(file) {
 
     const maxSize = 10 * 1024 * 1024;
 
-
     if (!allowedTypes.includes(file.type)) {
 
         showError(
@@ -127,7 +116,6 @@ function processFile(file) {
 
         return;
     }
-
 
     if (file.size > maxSize) {
 
@@ -138,7 +126,6 @@ function processFile(file) {
         return;
     }
 
-
     selectedFile = file;
 
     fileName.textContent = file.name;
@@ -146,9 +133,7 @@ function processFile(file) {
     fileSize.textContent =
         formatFileSize(file.size);
 
-
     const reader = new FileReader();
-
 
     reader.onload = function(event) {
 
@@ -160,15 +145,12 @@ function processFile(file) {
 
     };
 
-
     reader.readAsDataURL(file);
 
 }
 
 
-/* -------------------------
-   REMOVE IMAGE
-------------------------- */
+/* REMOVE IMAGE */
 
 function removeImage() {
 
@@ -187,9 +169,7 @@ function removeImage() {
 }
 
 
-/* -------------------------
-   FILE SIZE
-------------------------- */
+/* FILE SIZE */
 
 function formatFileSize(bytes) {
 
@@ -206,9 +186,7 @@ function formatFileSize(bytes) {
 }
 
 
-/* -------------------------
-   ERROR
-------------------------- */
+/* ERROR */
 
 function showError(message) {
 
@@ -228,18 +206,18 @@ function clearError() {
 }
 
 
-/* -------------------------
-   ANALYSIS
-------------------------- */
+/* ANALYSIS */
 
 async function analyzeImage() {
 
     clearError();
 
     if (!selectedFile) {
+
         showError(
             "Please upload an image before starting the analysis."
         );
+
         return;
     }
 
@@ -247,60 +225,75 @@ async function analyzeImage() {
         document.querySelector(".analyze-button");
 
     analyzeButton.disabled = true;
+
     analyzeButton.textContent = "Analyzing...";
 
     try {
 
-        // Load the uploaded image
-        const image = document.getElementById("imagePreview");
+        const image =
+            document.getElementById("imagePreview");
 
-        // Load MobileNet
-        const model = await mobilenet.load();
+        console.log("Loading MobileNet...");
 
-        // Classify the image
-        const predictions = await model.classify(image);
+        const model =
+            await mobilenet.load();
 
-        console.log("MobileNet predictions:", predictions);
+        console.log("MobileNet loaded.");
 
-        // Show the results section
+        const predictions =
+            await model.classify(image);
+
+        console.log(
+            "MobileNet predictions:",
+            predictions
+        );
+
         results.classList.remove("hidden");
 
         results.scrollIntoView({
             behavior: "smooth"
         });
 
-        // Get the result elements
         const tags =
             document.querySelector(".result-card .tags");
 
         const possibleResult =
             document.querySelector(".possible-result");
 
-        // Clear previous results
         tags.innerHTML = "";
+
         possibleResult.innerHTML = "";
 
-        // Display the top predictions
-        predictions.slice(0, 3).forEach(prediction => {
 
-            const tag = document.createElement("span");
+        predictions
+            .slice(0, 3)
+            .forEach(prediction => {
 
-            tag.textContent = prediction.className;
+                const tag =
+                    document.createElement("span");
 
-            tags.appendChild(tag);
+                tag.textContent =
+                    prediction.className;
 
-        });
+                tags.appendChild(tag);
 
-        // Show the highest-confidence classification
+            });
+
+
         if (predictions.length > 0) {
 
-            const topPrediction = predictions[0];
+            const topPrediction =
+                predictions[0];
 
             const percentage =
-                Math.round(topPrediction.probability * 100);
+                Math.round(
+                    topPrediction.probability * 100
+                );
 
             possibleResult.innerHTML = `
+
                 <div>
+
                     <strong>
                         ${topPrediction.className}
                     </strong>
@@ -308,18 +301,23 @@ async function analyzeImage() {
                     <p>
                         General image classification result
                     </p>
+
                 </div>
 
                 <div class="confidence">
                     ${percentage}%
                 </div>
+
             `;
 
         }
 
     } catch (error) {
 
-        console.error("Analysis error:", error);
+        console.error(
+            "Analysis error:",
+            error
+        );
 
         showError(
             "The image could not be analyzed. Please try another image."
@@ -328,7 +326,15 @@ async function analyzeImage() {
     } finally {
 
         analyzeButton.disabled = false;
-        analyzeButton.textContent = "Analyze Image";
+
+        analyzeButton.textContent =
+            "Analyze Image";
 
     }
+
 }
+
+
+/* INITIAL STATE */
+
+selectCategory("skin");
