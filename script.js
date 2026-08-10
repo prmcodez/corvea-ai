@@ -50,15 +50,14 @@ const results =
 
 const MODEL_PATHS = {
 
-    skin:
-        "./models/skin/model.json"
+    skin: "./models/skin/model.json"
 
 };
 
+
 const LABEL_PATHS = {
 
-    skin:
-        "./models/skin/labels.json"
+    skin: "./models/skin/labels.json"
 
 };
 
@@ -71,11 +70,13 @@ function selectCategory(category) {
 
     selectedCategory = category;
 
+
     document
         .querySelectorAll(".category-option")
         .forEach(button => {
 
             button.classList.remove("active");
+
 
             if (
                 button.dataset.category === category
@@ -87,11 +88,18 @@ function selectCategory(category) {
 
         });
 
+
     document
         .getElementById("analyze")
         .scrollIntoView({
             behavior: "smooth"
         });
+
+
+    console.log(
+        "Selected category:",
+        selectedCategory
+    );
 
 }
 
@@ -122,6 +130,7 @@ imageInput.addEventListener(
         const file =
             event.target.files[0];
 
+
         if (file) {
 
             processFile(file);
@@ -142,6 +151,7 @@ cameraInput.addEventListener(
 
         const file =
             event.target.files[0];
+
 
         if (file) {
 
@@ -189,12 +199,15 @@ uploadArea.addEventListener(
 
         event.preventDefault();
 
+
         uploadArea.classList.remove(
             "dragover"
         );
 
+
         const file =
             event.dataTransfer.files[0];
+
 
         if (file) {
 
@@ -214,6 +227,7 @@ function processFile(file) {
 
     clearError();
 
+
     const allowedTypes = [
 
         "image/jpeg",
@@ -223,11 +237,16 @@ function processFile(file) {
 
     ];
 
+
     const maxSize =
         10 * 1024 * 1024;
 
 
-    if (!allowedTypes.includes(file.type)) {
+    if (
+        !allowedTypes.includes(
+            file.type
+        )
+    ) {
 
         showError(
             "Please upload a JPG, JPEG, PNG, or WebP image."
@@ -238,7 +257,9 @@ function processFile(file) {
     }
 
 
-    if (file.size > maxSize) {
+    if (
+        file.size > maxSize
+    ) {
 
         showError(
             "The image is too large. Maximum size is 10 MB."
@@ -251,11 +272,15 @@ function processFile(file) {
 
     selectedFile = file;
 
+
     fileName.textContent =
         file.name;
 
+
     fileSize.textContent =
-        formatFileSize(file.size);
+        formatFileSize(
+            file.size
+        );
 
 
     const reader =
@@ -268,9 +293,11 @@ function processFile(file) {
             imagePreview.src =
                 event.target.result;
 
+
             imagePreviewContainer
                 .classList
                 .remove("hidden");
+
 
             uploadArea
                 .classList
@@ -292,23 +319,31 @@ function removeImage() {
 
     selectedFile = null;
 
+
     imageInput.value = "";
 
     cameraInput.value = "";
 
+
     imagePreview.src = "";
+
 
     imagePreviewContainer
         .classList
         .add("hidden");
 
+
     uploadArea
         .classList
         .remove("hidden");
 
+
     results
         .classList
         .add("hidden");
+
+
+    clearError();
 
 }
 
@@ -319,14 +354,18 @@ function removeImage() {
 
 function formatFileSize(bytes) {
 
-    if (bytes < 1024) {
+    if (
+        bytes < 1024
+    ) {
 
         return bytes + " B";
 
     }
 
 
-    if (bytes < 1024 * 1024) {
+    if (
+        bytes < 1024 * 1024
+    ) {
 
         return (
             bytes / 1024
@@ -352,6 +391,7 @@ function showError(message) {
     uploadError.textContent =
         message;
 
+
     uploadError
         .classList
         .remove("hidden");
@@ -361,7 +401,9 @@ function showError(message) {
 
 function clearError() {
 
-    uploadError.textContent = "";
+    uploadError.textContent =
+        "";
+
 
     uploadError
         .classList
@@ -376,7 +418,9 @@ function clearError() {
 
 async function loadSkinModel() {
 
-    if (skinModel !== null) {
+    if (
+        skinModel !== null
+    ) {
 
         return skinModel;
 
@@ -422,7 +466,9 @@ async function loadSkinModel() {
 
 async function loadSkinLabels() {
 
-    if (skinLabels !== null) {
+    if (
+        skinLabels !== null
+    ) {
 
         return skinLabels;
 
@@ -440,7 +486,9 @@ async function loadSkinLabels() {
         );
 
 
-    if (!response.ok) {
+    if (
+        !response.ok
+    ) {
 
         throw new Error(
             "Could not load labels.json"
@@ -472,9 +520,11 @@ function preprocessImage(image) {
 
     return tf.tidy(() => {
 
+
         let tensor =
-            tf.browser
-                .fromPixels(image);
+            tf.browser.fromPixels(
+                image
+            );
 
 
         tensor =
@@ -516,7 +566,9 @@ async function runSkinModel(image) {
 
 
     const input =
-        preprocessImage(image);
+        preprocessImage(
+            image
+        );
 
 
     let output = null;
@@ -525,7 +577,9 @@ async function runSkinModel(image) {
     try {
 
         output =
-            model.predict(input);
+            model.predict(
+                input
+            );
 
 
         const probabilities =
@@ -541,7 +595,10 @@ async function runSkinModel(image) {
         const predictions =
             resultsArray
                 .map(
-                    (probability, index) => ({
+                    (
+                        probability,
+                        index
+                    ) => ({
 
                         index:
                             index,
@@ -567,6 +624,7 @@ async function runSkinModel(image) {
 
     } finally {
 
+
         input.dispose();
 
 
@@ -586,10 +644,13 @@ async function runSkinModel(image) {
 
 
 // ============================================================
-// DISPLAY MODEL RESULTS
+// DISPLAY RESULTS
 // ============================================================
 
-function displaySkinResults(predictions) {
+function displaySkinResults(
+    predictions
+) {
+
 
     const tags =
         document.querySelector(
@@ -615,30 +676,11 @@ function displaySkinResults(predictions) {
         );
 
 
+    // --------------------------------------------------------
+    // CLEAR OLD TAGS
+    // --------------------------------------------------------
+
     tags.innerHTML = "";
-
-
-    // --------------------------------------------------------
-    // CATEGORY
-    // --------------------------------------------------------
-
-    const categoryTag =
-        document.createElement("span");
-
-    categoryTag.textContent =
-        "Category: Skin";
-
-    tags.appendChild(
-        categoryTag
-    );
-
-
-    // --------------------------------------------------------
-    // MODEL STATUS
-    // --------------------------------------------------------
-
-    qualityBadge.textContent =
-        "Corvea Skin Model";
 
 
     // --------------------------------------------------------
@@ -646,14 +688,20 @@ function displaySkinResults(predictions) {
     // --------------------------------------------------------
 
     const topPredictions =
-        predictions.slice(0, 3);
+        predictions.slice(
+            0,
+            3
+        );
 
 
     topPredictions.forEach(
         prediction => {
 
+
             const tag =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
 
 
             const percentage =
@@ -664,24 +712,34 @@ function displaySkinResults(predictions) {
 
 
             tag.textContent =
-                `${prediction.label} ${percentage}%`;
+                `${prediction.label} (${percentage}%)`;
 
 
-            tags.appendChild(tag);
+            tags.appendChild(
+                tag
+            );
 
         }
     );
 
 
     // --------------------------------------------------------
+    // MODEL BADGE
+    // --------------------------------------------------------
+
+    qualityBadge.textContent =
+        "Corvea Skin Model";
+
+
+    // --------------------------------------------------------
     // MAIN RESULT
     // --------------------------------------------------------
 
-    const top =
+    const best =
         predictions[0];
 
 
-    if (!top) {
+    if (!best) {
 
         possibleResult.innerHTML = `
             <strong>
@@ -689,8 +747,7 @@ function displaySkinResults(predictions) {
             </strong>
 
             <p>
-                The model did not return a usable
-                classification.
+                The model did not return a prediction.
             </p>
         `;
 
@@ -701,7 +758,7 @@ function displaySkinResults(predictions) {
 
     const confidence =
         (
-            top.probability *
+            best.probability *
             100
         ).toFixed(1);
 
@@ -711,7 +768,7 @@ function displaySkinResults(predictions) {
         <div>
 
             <strong>
-                ${top.label}
+                ${best.label}
             </strong>
 
             <p>
@@ -725,29 +782,20 @@ function displaySkinResults(predictions) {
 
 
     // --------------------------------------------------------
-    // SAFETY WARNINGS
+    // WARNINGS
     // --------------------------------------------------------
 
-    if (warnings.length >= 2) {
-
-        warnings[0].textContent =
-            "The model provides a computer-vision classification based on the image. This is not a medical finding.";
-
-        warnings[1].textContent =
-            "This result is educational and must not be interpreted as a diagnosis. A qualified healthcare professional should evaluate health concerns.";
-
-    }
-
-}
+    warnings[0].textContent =
+        "The displayed predictions come from Corvea's trained computer-vision model and represent model outputs, not confirmed medical findings.";
 
 
-// ============================================================
-// UPDATE BIOLOGY SECTION
-// ============================================================
+    warnings[1].textContent =
+        "Corvea is an educational project. Model predictions may be incorrect and must not be interpreted as a medical diagnosis.";
 
-function updateBiologySection(
-    prediction
-) {
+
+    // --------------------------------------------------------
+    // BIOLOGY
+    // --------------------------------------------------------
 
     const biologyText =
         document.querySelector(
@@ -755,59 +803,22 @@ function updateBiologySection(
         );
 
 
-    if (!biologyText) {
-
-        return;
-
-    }
+    biologyText.textContent =
+        "Visible skin characteristics can be influenced by biological processes involving the skin barrier, immune system, inflammation, follicles, microorganisms, and other tissues.";
 
 
-    const label =
-        prediction.label.toLowerCase();
+    // --------------------------------------------------------
+    // SHOW RESULTS
+    // --------------------------------------------------------
+
+    results.classList.remove(
+        "hidden"
+    );
 
 
-    if (
-        label.includes("acne")
-    ) {
-
-        biologyText.textContent =
-            "Acne can involve hair follicles, sebum production, changes in follicular cells, inflammation, and interactions with microorganisms associated with the skin.";
-
-    }
-
-    else if (
-        label.includes("eczema")
-    ) {
-
-        biologyText.textContent =
-            "Eczema can involve disruption of the skin barrier and immune-system activity, which may contribute to inflammation, dryness, itching, and visible skin changes.";
-
-    }
-
-    else if (
-        label.includes("psoriasis")
-    ) {
-
-        biologyText.textContent =
-            "Psoriasis involves immune-system activity that can increase inflammation and accelerate the growth cycle of skin cells, contributing to visible plaques and scaling.";
-
-    }
-
-    else if (
-        label.includes("melanoma")
-    ) {
-
-        biologyText.textContent =
-            "Melanoma involves abnormal growth of melanocytes, the cells responsible for producing melanin. Changes in a pigmented lesion can have many possible causes and require professional evaluation.";
-
-    }
-
-    else {
-
-        biologyText.textContent =
-            "Visible skin changes can be influenced by the skin barrier, immune responses, inflammation, follicles, microorganisms, pigmentation, and other biological processes.";
-
-    }
+    results.scrollIntoView({
+        behavior: "smooth"
+    });
 
 }
 
@@ -838,13 +849,16 @@ async function analyzeImage() {
         );
 
 
-    analyzeButton.disabled = true;
+    analyzeButton.disabled =
+        true;
+
 
     analyzeButton.textContent =
-        "Analyzing...";
+        "Loading AI model...";
 
 
     try {
+
 
         console.log(
             "Starting Corvea health analysis..."
@@ -852,7 +866,7 @@ async function analyzeImage() {
 
 
         // ----------------------------------------------------
-        // CHECK CATEGORY
+        // ONLY SKIN IS CURRENTLY CONNECTED
         // ----------------------------------------------------
 
         if (
@@ -861,14 +875,14 @@ async function analyzeImage() {
         ) {
 
             throw new Error(
-                "The health model currently supports skin images only. Teeth and eye models have not been connected yet."
+                "Only the skin model is currently connected. Teeth and eye models will be added later."
             );
 
         }
 
 
         // ----------------------------------------------------
-        // GET IMAGE
+        // WAIT FOR IMAGE
         // ----------------------------------------------------
 
         const image =
@@ -877,23 +891,13 @@ async function analyzeImage() {
             );
 
 
-        if (!image.complete) {
-
-            await new Promise(
-                resolve => {
-
-                    image.onload =
-                        resolve;
-
-                }
-            );
-
-        }
-
-
         // ----------------------------------------------------
-        // RUN SKIN MODEL
+        // RUN MODEL
         // ----------------------------------------------------
+
+        analyzeButton.textContent =
+            "Analyzing image...";
+
 
         const predictions =
             await runSkinModel(
@@ -902,27 +906,13 @@ async function analyzeImage() {
 
 
         console.log(
-            "Corvea model predictions:",
+            "Skin model predictions:",
             predictions
         );
 
 
         // ----------------------------------------------------
-        // SHOW RESULTS
-        // ----------------------------------------------------
-
-        results
-            .classList
-            .remove("hidden");
-
-
-        results.scrollIntoView({
-            behavior: "smooth"
-        });
-
-
-        // ----------------------------------------------------
-        // DISPLAY RESULTS
+        // DISPLAY
         // ----------------------------------------------------
 
         displaySkinResults(
@@ -930,29 +920,13 @@ async function analyzeImage() {
         );
 
 
-        // ----------------------------------------------------
-        // BIOLOGY
-        // ----------------------------------------------------
-
-        if (
-            predictions.length > 0
-        ) {
-
-            updateBiologySection(
-                predictions[0]
-            );
-
-        }
-
-
         console.log(
             "Corvea health analysis completed."
         );
 
-    }
 
+    } catch (error) {
 
-    catch (error) {
 
         console.error(
             "Corvea analysis error:",
@@ -962,16 +936,16 @@ async function analyzeImage() {
 
         showError(
             error.message ||
-            "The image could not be analyzed. Please try another image."
+            "The image could not be analyzed. Please try again."
         );
 
-    }
 
+    } finally {
 
-    finally {
 
         analyzeButton.disabled =
             false;
+
 
         analyzeButton.textContent =
             "Analyze Image";
