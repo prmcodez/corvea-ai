@@ -1,7 +1,7 @@
-console.log("CORVEA HEALTH EDUCATION VERSION 2");
+console.log("CORVEA — AI HEALTH EDUCATION VERSION");
 
 // ============================================================
-// VARIABLES
+// STATE
 // ============================================================
 
 let selectedCategory = "skin";
@@ -11,32 +11,19 @@ let selectedFile = null;
 // DOM ELEMENTS
 // ============================================================
 
-const imageInput =
-    document.getElementById("imageInput");
+const imageInput = document.getElementById("imageInput");
+const cameraInput = document.getElementById("cameraInput");
+const uploadArea = document.getElementById("uploadArea");
 
-const cameraInput =
-    document.getElementById("cameraInput");
-
-const uploadArea =
-    document.getElementById("uploadArea");
-
-const imagePreview =
-    document.getElementById("imagePreview");
-
+const imagePreview = document.getElementById("imagePreview");
 const imagePreviewContainer =
     document.getElementById("imagePreviewContainer");
 
-const fileName =
-    document.getElementById("fileName");
+const fileName = document.getElementById("fileName");
+const fileSize = document.getElementById("fileSize");
 
-const fileSize =
-    document.getElementById("fileSize");
-
-const uploadError =
-    document.getElementById("uploadError");
-
-const results =
-    document.getElementById("results");
+const uploadError = document.getElementById("uploadError");
+const results = document.getElementById("results");
 
 // ============================================================
 // CATEGORY SELECTION
@@ -52,14 +39,9 @@ function selectCategory(category) {
 
             button.classList.remove("active");
 
-            if (
-                button.dataset.category === category
-            ) {
-
+            if (button.dataset.category === category) {
                 button.classList.add("active");
-
             }
-
         });
 
     document
@@ -68,10 +50,7 @@ function selectCategory(category) {
             behavior: "smooth"
         });
 
-    console.log(
-        "Selected category:",
-        selectedCategory
-    );
+    console.log("Selected category:", selectedCategory);
 }
 
 // ============================================================
@@ -91,91 +70,61 @@ function scrollToAnalysis() {
 // IMAGE INPUT
 // ============================================================
 
-imageInput.addEventListener(
-    "change",
-    function(event) {
+imageInput.addEventListener("change", function (event) {
 
-        const file =
-            event.target.files[0];
+    const file = event.target.files[0];
 
-        if (file) {
-
-            processFile(file);
-
-        }
-
+    if (file) {
+        processFile(file);
     }
-);
+
+});
 
 // ============================================================
 // CAMERA INPUT
 // ============================================================
 
-cameraInput.addEventListener(
-    "change",
-    function(event) {
+cameraInput.addEventListener("change", function (event) {
 
-        const file =
-            event.target.files[0];
+    const file = event.target.files[0];
 
-        if (file) {
-
-            processFile(file);
-
-        }
-
+    if (file) {
+        processFile(file);
     }
-);
+
+});
 
 // ============================================================
 // DRAG AND DROP
 // ============================================================
 
-uploadArea.addEventListener(
-    "dragover",
-    function(event) {
+uploadArea.addEventListener("dragover", function (event) {
 
-        event.preventDefault();
+    event.preventDefault();
 
-        uploadArea.classList.add(
-            "dragover"
-        );
+    uploadArea.classList.add("dragover");
 
+});
+
+uploadArea.addEventListener("dragleave", function () {
+
+    uploadArea.classList.remove("dragover");
+
+});
+
+uploadArea.addEventListener("drop", function (event) {
+
+    event.preventDefault();
+
+    uploadArea.classList.remove("dragover");
+
+    const file = event.dataTransfer.files[0];
+
+    if (file) {
+        processFile(file);
     }
-);
 
-uploadArea.addEventListener(
-    "dragleave",
-    function() {
-
-        uploadArea.classList.remove(
-            "dragover"
-        );
-
-    }
-);
-
-uploadArea.addEventListener(
-    "drop",
-    function(event) {
-
-        event.preventDefault();
-
-        uploadArea.classList.remove(
-            "dragover"
-        );
-
-        const file =
-            event.dataTransfer.files[0];
-
-        if (file) {
-
-            processFile(file);
-
-        }
-
-    }
-);
+});
 
 // ============================================================
 // PROCESS IMAGE
@@ -192,14 +141,10 @@ function processFile(file) {
         "image/webp"
     ];
 
-    const maxSize =
-        10 * 1024 * 1024;
+    const maxSize = 10 * 1024 * 1024;
 
-    if (
-        !allowedTypes.includes(
-            file.type
-        )
-    ) {
+    // Check file type
+    if (!allowedTypes.includes(file.type)) {
 
         showError(
             "Please upload a JPG, JPEG, PNG, or WebP image."
@@ -208,9 +153,8 @@ function processFile(file) {
         return;
     }
 
-    if (
-        file.size > maxSize
-    ) {
+    // Check file size
+    if (file.size > maxSize) {
 
         showError(
             "The image is too large. Maximum size is 10 MB."
@@ -221,34 +165,34 @@ function processFile(file) {
 
     selectedFile = file;
 
-    fileName.textContent =
-        file.name;
+    fileName.textContent = file.name;
 
     fileSize.textContent =
-        formatFileSize(
-            file.size
-        );
+        formatFileSize(file.size);
 
-    const reader =
-        new FileReader();
+    const reader = new FileReader();
 
-    reader.onload =
-        function(event) {
+    reader.onload = function (event) {
 
-            imagePreview.src =
-                event.target.result;
+        imagePreview.src =
+            event.target.result;
 
-            imagePreviewContainer
-                .classList
-                .remove("hidden");
+        imagePreviewContainer
+            .classList
+            .remove("hidden");
 
-            uploadArea
-                .classList
-                .add("hidden");
+        uploadArea
+            .classList
+            .add("hidden");
 
-        };
+    };
 
     reader.readAsDataURL(file);
+
+    console.log(
+        "Image selected:",
+        file.name
+    );
 }
 
 // ============================================================
@@ -277,6 +221,8 @@ function removeImage() {
         .add("hidden");
 
     clearError();
+
+    console.log("Image removed.");
 }
 
 // ============================================================
@@ -285,22 +231,15 @@ function removeImage() {
 
 function formatFileSize(bytes) {
 
-    if (
-        bytes < 1024
-    ) {
-
+    if (bytes < 1024) {
         return bytes + " B";
-
     }
 
-    if (
-        bytes < 1024 * 1024
-    ) {
+    if (bytes < 1024 * 1024) {
 
         return (
             bytes / 1024
         ).toFixed(1) + " KB";
-
     }
 
     return (
@@ -315,22 +254,242 @@ function formatFileSize(bytes) {
 
 function showError(message) {
 
-    uploadError.textContent =
-        message;
+    uploadError.textContent = message;
 
     uploadError
         .classList
         .remove("hidden");
+
 }
 
 function clearError() {
 
-    uploadError.textContent =
-        "";
+    uploadError.textContent = "";
 
     uploadError
         .classList
         .add("hidden");
+
+}
+
+// ============================================================
+// CONVERT IMAGE TO BASE64
+// ============================================================
+
+function getImageAsBase64() {
+
+    return new Promise((resolve, reject) => {
+
+        if (!selectedFile) {
+            reject(
+                new Error("No image selected.")
+            );
+
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function () {
+
+            const base64 =
+                reader.result.split(",")[1];
+
+            resolve(base64);
+        };
+
+        reader.onerror = function () {
+
+            reject(
+                new Error(
+                    "Could not read the image."
+                )
+            );
+
+        };
+
+        reader.readAsDataURL(selectedFile);
+
+    });
+}
+
+// ============================================================
+// DISPLAY AI RESULTS
+// ============================================================
+
+function displayResults(data) {
+
+    const tags =
+        document.querySelector(".result-card .tags");
+
+    const possibleResult =
+        document.querySelector(".possible-result");
+
+    const qualityBadge =
+        document.querySelector(".quality-badge");
+
+    const warnings =
+        document.querySelectorAll(".result-warning");
+
+    const biologyText =
+        document.querySelector(".biology-card > p");
+
+    const biologyMechanism =
+        document.querySelector(".biology-grid div:first-child p");
+
+    const biologyAppearance =
+        document.querySelector(".biology-grid div:last-child p");
+
+
+    // --------------------------------------------------------
+    // VISUAL CHARACTERISTICS
+    // --------------------------------------------------------
+
+    tags.innerHTML = "";
+
+    if (
+        data.visualCharacteristics &&
+        data.visualCharacteristics.length > 0
+    ) {
+
+        data.visualCharacteristics.forEach(
+            characteristic => {
+
+                const tag =
+                    document.createElement("span");
+
+                tag.textContent =
+                    characteristic;
+
+                tags.appendChild(tag);
+
+            }
+        );
+
+    } else {
+
+        const tag =
+            document.createElement("span");
+
+        tag.textContent =
+            "No characteristics identified";
+
+        tags.appendChild(tag);
+    }
+
+
+    // --------------------------------------------------------
+    // POSSIBLE EXPLANATION
+    // --------------------------------------------------------
+
+    if (data.possibleExplanation) {
+
+        possibleResult.innerHTML = `
+
+            <div>
+
+                <strong>
+                    ${escapeHTML(
+                        data.possibleExplanation
+                    )}
+                </strong>
+
+                <p>
+                    Educational possibility based
+                    on the submitted information.
+                </p>
+
+            </div>
+
+        `;
+
+    } else {
+
+        possibleResult.innerHTML = `
+
+            <div>
+
+                <strong>
+                    No specific explanation available
+                </strong>
+
+                <p>
+                    The AI could not provide a useful
+                    educational explanation.
+                </p>
+
+            </div>
+
+        `;
+    }
+
+
+    // --------------------------------------------------------
+    // BADGE
+    // --------------------------------------------------------
+
+    qualityBadge.textContent =
+        "AI Educational Analysis";
+
+
+    // --------------------------------------------------------
+    // WARNINGS
+    // --------------------------------------------------------
+
+    warnings[0].textContent =
+        "AI-generated observations may be incorrect and should not be treated as confirmed medical findings.";
+
+    warnings[1].textContent =
+        "Corvea is an educational project, not a medical diagnostic service.";
+
+
+    // --------------------------------------------------------
+    // BIOLOGY
+    // --------------------------------------------------------
+
+    if (data.biology) {
+
+        biologyText.textContent =
+            data.biology;
+    }
+
+    if (data.biologicalMechanisms) {
+
+        biologyMechanism.textContent =
+            data.biologicalMechanisms;
+    }
+
+    if (data.whyItLooksThisWay) {
+
+        biologyAppearance.textContent =
+            data.whyItLooksThisWay;
+    }
+
+
+    // --------------------------------------------------------
+    // SHOW RESULTS
+    // --------------------------------------------------------
+
+    results.classList.remove("hidden");
+
+    results.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// ============================================================
+// HTML SAFETY
+// ============================================================
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
 }
 
 // ============================================================
@@ -341,6 +500,10 @@ async function analyzeImage() {
 
     clearError();
 
+    // --------------------------------------------------------
+    // CHECK IMAGE
+    // --------------------------------------------------------
+
     if (!selectedFile) {
 
         showError(
@@ -350,39 +513,145 @@ async function analyzeImage() {
         return;
     }
 
-    const analyzeButton =
-        document.querySelector(
-            ".analyze-button"
-        );
 
-    analyzeButton.disabled =
-        true;
+    // --------------------------------------------------------
+    // GET BUTTON
+    // --------------------------------------------------------
+
+    const analyzeButton =
+        document.querySelector(".analyze-button");
+
+
+    analyzeButton.disabled = true;
 
     analyzeButton.textContent =
-        "Preparing analysis...";
+        "Preparing image...";
+
 
     try {
 
-        /*
-         * The actual AI vision API will be
-         * connected here.
-         *
-         * Do NOT put a private API key
-         * directly inside this JavaScript file.
-         */
+        console.log(
+            "Starting Corvea analysis..."
+        );
+
+        console.log(
+            "Category:",
+            selectedCategory
+        );
+
+
+        // ----------------------------------------------------
+        // GET USER INFORMATION
+        // ----------------------------------------------------
+
+        const concern =
+            document.getElementById(
+                "concern"
+            ).value;
+
+        const duration =
+            document.getElementById(
+                "duration"
+            ).value;
+
+        const symptoms =
+            document.getElementById(
+                "symptoms"
+            ).value;
+
+
+        // ----------------------------------------------------
+        // CONVERT IMAGE
+        // ----------------------------------------------------
+
+        analyzeButton.textContent =
+            "Preparing AI analysis...";
+
+        const image =
+            await getImageAsBase64();
+
+
+        console.log(
+            "Image successfully prepared."
+        );
+
+
+        // ----------------------------------------------------
+        // BACKEND CONNECTION
+        // ----------------------------------------------------
+        //
+        // IMPORTANT:
+        // This URL will be connected to your backend.
+        //
+        // Do NOT put an AI API key in this file.
+        //
+        // ----------------------------------------------------
 
         analyzeButton.textContent =
             "Analyzing image...";
 
-        await new Promise(
-            resolve =>
-                setTimeout(
-                    resolve,
-                    1000
-                )
+
+        const response =
+            await fetch(
+                "/api/analyze",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        category:
+                            selectedCategory,
+
+                        image:
+                            image,
+
+                        concern:
+                            concern,
+
+                        duration:
+                            duration,
+
+                        symptoms:
+                            symptoms
+
+                    })
+                }
+            );
+
+
+        // ----------------------------------------------------
+        // CHECK RESPONSE
+        // ----------------------------------------------------
+
+        if (!response.ok) {
+
+            throw new Error(
+                "The AI analysis service is not connected yet."
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "AI response:",
+            data
         );
 
-        displayEducationalResult();
+
+        // ----------------------------------------------------
+        // DISPLAY
+        // ----------------------------------------------------
+
+        displayResults(data);
+
 
     } catch (error) {
 
@@ -391,9 +660,12 @@ async function analyzeImage() {
             error
         );
 
+
         showError(
+            error.message ||
             "The image could not be analyzed. Please try again."
         );
+
 
     } finally {
 
@@ -403,85 +675,6 @@ async function analyzeImage() {
         analyzeButton.textContent =
             "Analyze Image";
     }
-}
-
-// ============================================================
-// DISPLAY EDUCATIONAL RESULT
-// ============================================================
-
-function displayEducationalResult() {
-
-    const tags =
-        document.querySelector(
-            ".result-card .tags"
-        );
-
-    const possibleResult =
-        document.querySelector(
-            ".possible-result"
-        );
-
-    const qualityBadge =
-        document.querySelector(
-            ".quality-badge"
-        );
-
-    const warnings =
-        document.querySelectorAll(
-            ".result-warning"
-        );
-
-    const biologyText =
-        document.querySelector(
-            ".biology-card > p"
-        );
-
-    tags.innerHTML = "";
-
-    const tag =
-        document.createElement(
-            "span"
-        );
-
-    tag.textContent =
-        "AI analysis connection pending";
-
-    tags.appendChild(tag);
-
-    qualityBadge.textContent =
-        "Educational Preview";
-
-    possibleResult.innerHTML = `
-        <div>
-
-            <strong>
-                AI analysis will appear here
-            </strong>
-
-            <p>
-                The image-analysis service
-                has not been connected yet.
-            </p>
-
-        </div>
-    `;
-
-    warnings[0].textContent =
-        "Corvea will use AI to identify observable visual characteristics and provide educational possibilities.";
-
-    warnings[1].textContent =
-        "AI-generated information may be incorrect and must not be interpreted as a medical diagnosis.";
-
-    biologyText.textContent =
-        "Corvea will explain the biological processes that may be associated with observable characteristics, including inflammation, skin-barrier function, microorganisms, tissues, and other relevant mechanisms.";
-
-    results
-        .classList
-        .remove("hidden");
-
-    results.scrollIntoView({
-        behavior: "smooth"
-    });
 }
 
 // ============================================================
