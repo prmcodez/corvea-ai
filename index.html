@@ -1,33 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Corvea | Visual Health Education</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 
+
 <body>
+
 
 <header class="navbar">
 
     <div class="logo">
-        <div class="logo-icon">C</div>
-        <span>Corvea</span>
+
+        <div class="logo-icon">
+            C
+        </div>
+
+        <span>
+            Corvea
+        </span>
+
     </div>
 
+
     <nav>
-        <a href="#home">Home</a>
-        <a href="#analyze">Analyze</a>
-        <a href="#conditions">Conditions</a>
-        <a href="#how-it-works">How It Works</a>
-        <a href="#research">Research</a>
+
+        <a href="#home">
+            Home
+        </a>
+
+        <a href="#analyze">
+            Analyze
+        </a>
+
+        <a href="#conditions">
+            Conditions
+        </a>
+
+        <a href="#how-it-works">
+            How It Works
+        </a>
+
+        <a href="#research">
+            Research
+        </a>
+
     </nav>
 
-    <button class="nav-button" onclick="scrollToAnalysis()">
+
+    <button
+        class="nav-button"
+        onclick="scrollToAnalysis()">
+
         Start Analysis
+
     </button>
 
 </header>
@@ -35,9 +71,14 @@
 
 <main>
 
-<!-- HERO -->
 
-<section class="hero" id="home">
+<!-- ===================================================== -->
+<!-- HERO -->
+<!-- ===================================================== -->
+
+<section
+    class="hero"
+    id="home">
 
     <div class="hero-text">
 
@@ -45,33 +86,54 @@
             AI • BIOLOGY • HEALTH EDUCATION
         </span>
 
+
         <h1>
+
             Understand Your Health.
-            <span>Powered by AI.</span>
+
+            <span>
+                Powered by AI.
+            </span>
+
         </h1>
 
+
         <p>
-            Corvea uses computer vision and biomedical information
-            to help users better understand visible health concerns
-            involving the skin, teeth, and eyes.
+
+            Corvea uses computer vision and biomedical
+            information to help users better understand
+            visible health concerns involving the skin,
+            teeth, and eyes.
+
         </p>
+
 
         <div class="hero-buttons">
 
-            <button class="primary-button"
-                    onclick="scrollToAnalysis()">
+            <button
+                class="primary-button"
+                onclick="scrollToAnalysis()">
+
                 Start an Analysis
+
             </button>
 
-            <button class="secondary-button"
-                    onclick="document.getElementById('conditions').scrollIntoView()">
+
+            <button
+                class="secondary-button"
+                onclick="document.getElementById('conditions').scrollIntoView({behavior:'smooth'})">
+
                 Explore Conditions
+
             </button>
 
         </div>
 
+
         <div class="disclaimer-small">
+
             Educational tool • Not a medical diagnosis
+
         </div>
 
     </div>
@@ -82,21 +144,35 @@
         <div class="face-card">
 
             <div class="face-placeholder">
-                <div class="face-circle"></div>
+
+                <div class="face-circle">
+                </div>
+
 
                 <div class="marker marker-one">
+
                     <span></span>
+
                     Skin
+
                 </div>
+
 
                 <div class="marker marker-two">
+
                     <span></span>
+
                     Eyes
+
                 </div>
 
+
                 <div class="marker marker-three">
+
                     <span></span>
+
                     Teeth
+
                 </div>
 
             </div>
@@ -108,21 +184,30 @@
 </section>
 
 
+<!-- ===================================================== -->
 <!-- CATEGORIES -->
+<!-- ===================================================== -->
 
 <section class="categories">
 
+
     <div class="section-heading">
 
-        <span>EXPLORE</span>
+        <span>
+            EXPLORE
+        </span>
+
 
         <h2>
             Choose an area to analyze
         </h2>
 
+
         <p>
-            Explore visible characteristics across three areas
-            of visual health.
+
+            Explore visible characteristics across
+            three areas of visual health.
+
         </p>
 
     </div>
@@ -130,76 +215,129 @@
 
     <div class="category-grid">
 
-        <button class="category-card"
-                onclick="selectCategory('skin')">
 
-            <div class="category-icon">✦</div>
+        <button
+            class="category-card"
+            onclick="selectCategory('skin')">
 
-            <h3>Skin</h3>
+            <div class="category-icon">
+                ✦
+            </div>
+
+
+            <h3>
+                Skin
+            </h3>
+
 
             <p>
+
                 Explore acne, inflammation, rashes,
-                discoloration, and other visible characteristics.
+                discoloration, and other visible
+                characteristics.
+
             </p>
 
-            <strong>Analyze Skin →</strong>
+
+            <strong>
+                Analyze Skin →
+            </strong>
 
         </button>
 
 
-        <button class="category-card"
-                onclick="selectCategory('teeth')">
+        <button
+            class="category-card"
+            onclick="selectCategory('teeth')">
 
-            <div class="category-icon">◆</div>
+            <div class="category-icon">
+                ◆
+            </div>
 
-            <h3>Teeth</h3>
+
+            <h3>
+                Teeth
+            </h3>
+
 
             <p>
-                Explore plaque, discoloration, gum inflammation,
-                and other visible dental concerns.
+
+                Explore plaque, discoloration,
+                gum inflammation, and other
+                visible dental concerns.
+
             </p>
 
-            <strong>Analyze Teeth →</strong>
+
+            <strong>
+                Analyze Teeth →
+            </strong>
 
         </button>
 
 
-        <button class="category-card"
-                onclick="selectCategory('eyes')">
+        <button
+            class="category-card"
+            onclick="selectCategory('eyes')">
 
-            <div class="category-icon">◉</div>
+            <div class="category-icon">
+                ◉
+            </div>
 
-            <h3>Eyes</h3>
+
+            <h3>
+                Eyes
+            </h3>
+
 
             <p>
-                Explore redness, irritation, swelling,
-                and other observable eye characteristics.
+
+                Explore redness, irritation,
+                swelling, and other observable
+                eye characteristics.
+
             </p>
 
-            <strong>Analyze Eyes →</strong>
+
+            <strong>
+                Analyze Eyes →
+            </strong>
 
         </button>
+
 
     </div>
 
 </section>
 
 
+<!-- ===================================================== -->
 <!-- ANALYSIS -->
+<!-- ===================================================== -->
 
-<section class="analysis-section" id="analyze">
+<section
+    class="analysis-section"
+    id="analyze">
+
 
     <div class="section-heading">
 
-        <span>VISUAL ANALYSIS</span>
+        <span>
+            VISUAL ANALYSIS
+        </span>
+
 
         <h2>
             Explore a health concern
         </h2>
 
+
         <p>
-            Upload an image to explore possible explanations
-            and learn about the biology behind visible characteristics.
+
+            Upload an image to explore possible
+            explanations and learn about the biology
+            behind visible characteristics.
+
         </p>
 
     </div>
@@ -207,31 +345,48 @@
 
     <div class="analysis-container">
 
+
         <!-- CATEGORY -->
 
         <div class="analysis-card">
 
-            <h3>1. Choose a category</h3>
+            <h3>
+                1. Choose a category
+            </h3>
+
 
             <div class="category-selector">
 
-                <button class="category-option"
-                        data-category="skin"
-                        onclick="selectCategory('skin')">
+
+                <button
+                    class="category-option active"
+                    data-category="skin"
+                    onclick="selectCategory('skin')">
+
                     🧴 Skin
+
                 </button>
 
-                <button class="category-option"
-                        data-category="teeth"
-                        onclick="selectCategory('teeth')">
+
+                <button
+                    class="category-option"
+                    data-category="teeth"
+                    onclick="selectCategory('teeth')">
+
                     🦷 Teeth
+
                 </button>
 
-                <button class="category-option"
-                        data-category="eyes"
-                        onclick="selectCategory('eyes')">
+
+                <button
+                    class="category-option"
+                    data-category="eyes"
+                    onclick="selectCategory('eyes')">
+
                     👁️ Eyes
+
                 </button>
+
 
             </div>
 
@@ -242,110 +397,151 @@
 
         <div class="analysis-card">
 
-            <h3>2. Upload an image</h3>
+            <h3>
+                2. Upload an image
+            </h3>
 
-            <div class="upload-area"
-                 id="uploadArea">
+
+            <div
+                class="upload-area"
+                id="uploadArea">
+
 
                 <div class="upload-icon">
                     ↑
                 </div>
 
+
                 <h4>
                     Drag & drop your image here
                 </h4>
+
 
                 <p>
                     or click to browse
                 </p>
 
+
                 <span>
-                    JPG, JPEG, or PNG • Maximum 10 MB
+                    JPG, JPEG, PNG, or WebP • Maximum 10 MB
                 </span>
+
 
                 <div class="upload-buttons">
 
-    <button
-        type="button"
-        class="secondary-button"
-        onclick="document.getElementById('cameraInput').click()">
-        📷 Take Photo
-    </button>
 
-    <button
-        type="button"
-        class="secondary-button"
-        onclick="document.getElementById('imageInput').click()">
-        🖼️ Choose Image
-    </button>
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="document.getElementById('cameraInput').click()">
 
-</div>
+                        📷 Take Photo
 
-<input
-    type="file"
-    id="cameraInput"
-    accept="image/*"
-    capture="environment"
-    hidden
->
+                    </button>
 
-<input
-    type="file"
-    id="imageInput"
-    accept="image/jpeg,image/png,image/jpg"
-    hidden
->
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="document.getElementById('imageInput').click()">
+
+                        🖼️ Choose Image
+
+                    </button>
+
+
+                </div>
+
+
+                <input
+                    type="file"
+                    id="cameraInput"
+                    accept="image/*"
+                    capture="environment"
+                    hidden
+                >
+
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/jpeg,image/png,image/jpg,image/webp"
+                    hidden
+                >
+
 
             </div>
 
 
-            <div id="imagePreviewContainer"
-                 class="preview-container hidden">
+            <div
+                id="imagePreviewContainer"
+                class="preview-container hidden">
 
-                <img id="imagePreview"
-                     alt="Uploaded image preview">
+
+                <img
+                    id="imagePreview"
+                    alt="Uploaded image preview">
+
 
                 <div class="preview-info">
+
 
                     <strong id="fileName">
                         Image
                     </strong>
 
+
                     <span id="fileSize">
                         -
                     </span>
 
+
                     <button
+                        type="button"
                         class="remove-button"
                         onclick="removeImage()">
+
                         Remove Image
+
                     </button>
+
 
                 </div>
 
             </div>
 
 
-            <div id="uploadError"
-                 class="error-message hidden">
+            <div
+                id="uploadError"
+                class="error-message hidden">
             </div>
 
         </div>
 
 
-        <!-- OPTIONAL INFORMATION -->
+        <!-- ADDITIONAL INFORMATION -->
 
         <div class="analysis-card">
 
-            <h3>3. Additional information</h3>
+            <h3>
+                3. Additional information
+            </h3>
+
 
             <p class="muted">
-                Optional context can help organize the educational result.
+
+                Optional context can help organize
+                the educational result.
+
             </p>
 
+
             <label for="concern">
+
                 What are you concerned about?
+
             </label>
+
 
             <select id="concern">
 
@@ -381,8 +577,11 @@
 
 
             <label for="duration">
+
                 How long has it been present?
+
             </label>
+
 
             <select id="duration">
 
@@ -410,12 +609,17 @@
 
 
             <label for="symptoms">
+
                 Additional information
+
             </label>
+
 
             <textarea
                 id="symptoms"
-                placeholder="Describe what you noticed..."></textarea>
+                placeholder="Describe what you noticed...">
+            </textarea>
+
 
         </div>
 
@@ -428,21 +632,31 @@
                 !
             </div>
 
+
             <div>
 
-                <strong>Important</strong>
+                <strong>
+                    Important
+                </strong>
+
 
                 <p>
-                    Corvea is an educational AI tool and does not
-                    provide medical diagnoses. AI-generated information
-                    may be inaccurate or incomplete and should not
-                    replace evaluation by a qualified healthcare professional.
+
+                    Corvea is an educational AI tool
+                    and does not provide medical diagnoses.
+                    AI-generated information may be inaccurate
+                    or incomplete and should not replace
+                    evaluation by a qualified healthcare
+                    professional.
+
                 </p>
 
             </div>
 
         </div>
 
+
+        <!-- ANALYZE BUTTON -->
 
         <button
             class="analyze-button"
@@ -455,20 +669,26 @@
 
         <!-- RESULTS -->
 
-        <div id="results"
-             class="results hidden">
+        <div
+            id="results"
+            class="results hidden">
+
 
             <div class="results-header">
 
                 <div>
 
-                    <span>ANALYSIS RESULTS</span>
+                    <span>
+                        ANALYSIS RESULTS
+                    </span>
+
 
                     <h2>
                         Educational Analysis
                     </h2>
 
                 </div>
+
 
                 <div class="quality-badge">
                     Analysis Pending
@@ -479,32 +699,43 @@
 
             <div class="result-grid">
 
+
+                <!-- VISUAL CHARACTERISTICS -->
+
                 <div class="result-card">
 
                     <h3>
                         Detected Visual Characteristics
                     </h3>
 
+
                     <div class="tags">
 
-                        <span>Awaiting AI analysis</span>
+                        <span>
+                            Awaiting AI analysis
+                        </span>
 
                     </div>
 
+
                     <p class="result-warning">
-                        No visual characteristics are displayed yet.
-                        Corvea will populate this section after a
-                        computer-vision model is connected.
+
+                        No visual characteristics
+                        are displayed yet.
+
                     </p>
 
                 </div>
 
+
+                <!-- POSSIBLE EXPLANATIONS -->
 
                 <div class="result-card">
 
                     <h3>
                         Possible Explanations
                     </h3>
+
 
                     <div class="possible-result">
 
@@ -514,19 +745,20 @@
                                 Analysis pending
                             </strong>
 
+
                             <p>
-                                No confidence score is currently shown.
+                                No prediction is currently shown.
                             </p>
 
                         </div>
 
                     </div>
 
+
                     <p class="result-warning">
 
-                        Corvea will provide possible explanations only
-                        after the AI system is connected. These will
-                        be educational possibilities, not diagnoses.
+                        Corvea provides educational
+                        possibilities, not diagnoses.
 
                     </p>
 
@@ -535,22 +767,33 @@
             </div>
 
 
+            <!-- BIOLOGY -->
+
             <div class="biology-card">
 
-                <span>BIOLOGY</span>
+
+                <span>
+                    BIOLOGY
+                </span>
+
 
                 <h2>
                     The Biology Behind It
                 </h2>
 
+
                 <p>
-                    Corvea will connect observable visual
-                    characteristics with biomedical information
-                    to explain how biological processes may
-                    contribute to what is observed.
+
+                    Corvea will connect observable
+                    visual characteristics with biomedical
+                    information to explain how biological
+                    processes may contribute to what is observed.
+
                 </p>
 
+
                 <div class="biology-grid">
+
 
                     <div>
 
@@ -558,11 +801,15 @@
                             Biological mechanisms
                         </strong>
 
+
                         <p>
-                            The completed system will explain how
+
+                            The system will explain how
                             cells, tissues, inflammation,
                             microorganisms, or other biological
-                            processes may contribute to visible changes.
+                            processes may contribute to visible
+                            changes.
+
                         </p>
 
                     </div>
@@ -574,17 +821,22 @@
                             Why it can look this way
                         </strong>
 
+
                         <p>
-                            The completed system will explain how
-                            biological processes can produce
-                            observable characteristics.
+
+                            Biological processes can produce
+                            observable characteristics in
+                            different ways.
+
                         </p>
 
                     </div>
 
+
                 </div>
 
             </div>
+
 
         </div>
 
@@ -593,13 +845,21 @@
 </section>
 
 
+<!-- ===================================================== -->
 <!-- HOW IT WORKS -->
+<!-- ===================================================== -->
 
-<section class="how-section" id="how-it-works">
+<section
+    class="how-section"
+    id="how-it-works">
+
 
     <div class="section-heading">
 
-        <span>HOW IT WORKS</span>
+        <span>
+            HOW IT WORKS
+        </span>
+
 
         <h2>
             From image to education
@@ -609,6 +869,7 @@
 
 
     <div class="steps">
+
 
         <div class="step">
 
@@ -694,27 +955,38 @@
 
         </div>
 
+
     </div>
 
 </section>
 
 
+<!-- ===================================================== -->
 <!-- CONDITIONS -->
+<!-- ===================================================== -->
 
-<section class="conditions-section"
-         id="conditions">
+<section
+    class="conditions-section"
+    id="conditions">
+
 
     <div class="section-heading">
 
-        <span>CONDITION LIBRARY</span>
+        <span>
+            CONDITION LIBRARY
+        </span>
+
 
         <h2>
             Learn before you analyze
         </h2>
 
+
         <p>
+
             Explore educational information about common
             skin, dental, and eye conditions.
+
         </p>
 
     </div>
@@ -722,17 +994,25 @@
 
     <div class="condition-grid">
 
+
         <div class="condition-card">
 
-            <span>SKIN</span>
+            <span>
+                SKIN
+            </span>
+
 
             <h3>
                 Acne
             </h3>
 
+
             <p>
-                Learn about follicles, sebum, inflammation,
-                and other biological processes associated with acne.
+
+                Learn about follicles, sebum,
+                inflammation, and other biological
+                processes associated with acne.
+
             </p>
 
         </div>
@@ -740,15 +1020,21 @@
 
         <div class="condition-card">
 
-            <span>SKIN</span>
+            <span>
+                SKIN
+            </span>
+
 
             <h3>
                 Eczema
             </h3>
 
+
             <p>
-                Explore inflammation, skin-barrier function,
-                and common symptoms.
+
+                Explore inflammation, skin-barrier
+                function, and common symptoms.
+
             </p>
 
         </div>
@@ -756,15 +1042,21 @@
 
         <div class="condition-card">
 
-            <span>DENTAL</span>
+            <span>
+                DENTAL
+            </span>
+
 
             <h3>
                 Gingivitis
             </h3>
 
+
             <p>
+
                 Learn about plaque, gum inflammation,
                 and oral health.
+
             </p>
 
         </div>
@@ -772,44 +1064,63 @@
 
         <div class="condition-card">
 
-            <span>EYE</span>
+            <span>
+                EYE
+            </span>
+
 
             <h3>
                 Eye Redness
             </h3>
 
+
             <p>
+
                 Explore common causes of visible redness
                 and why professional evaluation may be needed.
+
             </p>
 
         </div>
+
 
     </div>
 
 </section>
 
 
+<!-- ===================================================== -->
 <!-- RESEARCH -->
+<!-- ===================================================== -->
 
-<section class="research-section"
-         id="research">
+<section
+    class="research-section"
+    id="research">
+
 
     <div class="research-content">
 
-        <span>RESPONSIBLE AI</span>
+        <span>
+            RESPONSIBLE AI
+        </span>
+
 
         <h2>
             Building healthcare AI responsibly.
         </h2>
 
+
         <p>
-            Corvea is designed to explore the opportunities and
-            limitations of computer vision in healthcare education.
+
+            Corvea is designed to explore the opportunities
+            and limitations of computer vision in healthcare
+            education.
+
         </p>
 
 
         <div class="research-grid">
+
 
             <div>
 
@@ -817,9 +1128,13 @@
                     Model uncertainty
                 </strong>
 
+
                 <p>
-                    AI results can be wrong. Corvea should communicate
-                    uncertainty rather than presenting guesses as facts.
+
+                    AI results can be wrong.
+                    Corvea should communicate uncertainty
+                    rather than presenting guesses as facts.
+
                 </p>
 
             </div>
@@ -831,9 +1146,13 @@
                     Image quality
                 </strong>
 
+
                 <p>
-                    Lighting, focus, camera quality, and image angle
-                    can affect computer vision analysis.
+
+                    Lighting, focus, camera quality,
+                    and image angle can affect computer
+                    vision analysis.
+
                 </p>
 
             </div>
@@ -845,10 +1164,13 @@
                     Bias
                 </strong>
 
+
                 <p>
-                    AI systems must be evaluated for differences in
-                    performance across different image conditions
-                    and populations.
+
+                    AI systems must be evaluated for
+                    differences in performance across
+                    different image conditions and populations.
+
                 </p>
 
             </div>
@@ -860,12 +1182,17 @@
                     Human oversight
                 </strong>
 
+
                 <p>
-                    AI should support health education rather than
-                    replace qualified healthcare professionals.
+
+                    AI should support health education
+                    rather than replace qualified healthcare
+                    professionals.
+
                 </p>
 
             </div>
+
 
         </div>
 
@@ -873,12 +1200,19 @@
 
 </section>
 
+
 </main>
 
 
+<!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- ===================================================== -->
+
 <footer>
 
+
     <div class="footer-brand">
+
 
         <div class="logo">
 
@@ -886,11 +1220,13 @@
                 C
             </div>
 
+
             <span>
                 Corvea
             </span>
 
         </div>
+
 
         <p>
             AI-powered visual health education.
@@ -901,24 +1237,42 @@
 
     <div class="footer-disclaimer">
 
+
         <strong>
             Medical Disclaimer
         </strong>
 
+
         <p>
-            Corvea is an educational project and is not a medical
-            diagnostic service. Information generated by the system
-            may be inaccurate and should not replace professional
-            medical evaluation.
+
+            Corvea is an educational project and
+            is not a medical diagnostic service.
+            Information generated by the system may
+            be inaccurate and should not replace
+            professional medical evaluation.
+
         </p>
 
     </div>
 
+
 </footer>
 
 
+<!-- ===================================================== -->
+<!-- TENSORFLOW.JS -->
+<!-- ===================================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0"></script>
+
+
+<!-- ===================================================== -->
+<!-- CORVEA SCRIPT -->
+<!-- ===================================================== -->
+
 <script src="script.js"></script>
 
+
 </body>
+
 </html>
