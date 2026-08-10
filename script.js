@@ -1,4 +1,4 @@
-console.log("CORVEA — AI HEALTH EDUCATION VERSION");
+console.log("CORVEA — FREE BROWSER VERSION");
 
 // ============================================================
 // STATE
@@ -26,7 +26,7 @@ const uploadError = document.getElementById("uploadError");
 const results = document.getElementById("results");
 
 // ============================================================
-// CATEGORY SELECTION
+// CATEGORY
 // ============================================================
 
 function selectCategory(category) {
@@ -51,11 +51,11 @@ function selectCategory(category) {
             behavior: "smooth"
         });
 
-    console.log("Selected category:", selectedCategory);
+    console.log("Selected category:", category);
 }
 
 // ============================================================
-// SCROLL TO ANALYSIS
+// SCROLL
 // ============================================================
 
 function scrollToAnalysis() {
@@ -65,14 +65,13 @@ function scrollToAnalysis() {
         .scrollIntoView({
             behavior: "smooth"
         });
-
 }
 
 // ============================================================
 // IMAGE INPUT
 // ============================================================
 
-imageInput.addEventListener("change", function (event) {
+imageInput.addEventListener("change", event => {
 
     const file = event.target.files[0];
 
@@ -86,7 +85,7 @@ imageInput.addEventListener("change", function (event) {
 // CAMERA INPUT
 // ============================================================
 
-cameraInput.addEventListener("change", function (event) {
+cameraInput.addEventListener("change", event => {
 
     const file = event.target.files[0];
 
@@ -100,7 +99,7 @@ cameraInput.addEventListener("change", function (event) {
 // DRAG AND DROP
 // ============================================================
 
-uploadArea.addEventListener("dragover", function (event) {
+uploadArea.addEventListener("dragover", event => {
 
     event.preventDefault();
 
@@ -108,13 +107,13 @@ uploadArea.addEventListener("dragover", function (event) {
 
 });
 
-uploadArea.addEventListener("dragleave", function () {
+uploadArea.addEventListener("dragleave", () => {
 
     uploadArea.classList.remove("dragover");
 
 });
 
-uploadArea.addEventListener("drop", function (event) {
+uploadArea.addEventListener("drop", event => {
 
     event.preventDefault();
 
@@ -172,9 +171,10 @@ function processFile(file) {
 
     const reader = new FileReader();
 
-    reader.onload = function (event) {
+    reader.onload = event => {
 
-        imagePreview.src = event.target.result;
+        imagePreview.src =
+            event.target.result;
 
         imagePreviewContainer
             .classList
@@ -188,10 +188,6 @@ function processFile(file) {
 
     reader.readAsDataURL(file);
 
-    console.log(
-        "Image selected:",
-        file.name
-    );
 }
 
 // ============================================================
@@ -220,7 +216,6 @@ function removeImage() {
         .add("hidden");
 
     clearError();
-
 }
 
 // ============================================================
@@ -238,14 +233,11 @@ function formatFileSize(bytes) {
         return (
             bytes / 1024
         ).toFixed(1) + " KB";
-
     }
 
     return (
-        bytes /
-        (1024 * 1024)
+        bytes / (1024 * 1024)
     ).toFixed(1) + " MB";
-
 }
 
 // ============================================================
@@ -259,7 +251,6 @@ function showError(message) {
     uploadError
         .classList
         .remove("hidden");
-
 }
 
 function clearError() {
@@ -269,55 +260,141 @@ function clearError() {
     uploadError
         .classList
         .add("hidden");
-
 }
 
 // ============================================================
-// CONVERT IMAGE TO BASE64
+// FREE EDUCATIONAL ANALYSIS
 // ============================================================
 
-function getImageAsBase64() {
+function analyzeImage() {
 
-    return new Promise((resolve, reject) => {
+    clearError();
 
-        if (!selectedFile) {
+    if (!selectedFile) {
 
-            reject(
-                new Error("No image selected.")
+        showError(
+            "Please upload an image before starting the analysis."
+        );
+
+        return;
+    }
+
+    const analyzeButton =
+        document.querySelector(".analyze-button");
+
+    analyzeButton.disabled = true;
+
+    analyzeButton.textContent =
+        "Analyzing...";
+
+    /*
+     * This version does NOT send the image
+     * to a paid API or external server.
+     *
+     * It provides educational information
+     * based on the selected category.
+     */
+
+    setTimeout(() => {
+
+        const data =
+            getEducationalInformation(
+                selectedCategory
             );
 
-            return;
-        }
+        displayResults(data);
 
-        const reader = new FileReader();
+        analyzeButton.disabled = false;
 
-        reader.onload = function () {
+        analyzeButton.textContent =
+            "Analyze Image";
 
-            const base64 =
-                reader.result.split(",")[1];
-
-            resolve(base64);
-
-        };
-
-        reader.onerror = function () {
-
-            reject(
-                new Error(
-                    "Could not read the image."
-                )
-            );
-
-        };
-
-        reader.readAsDataURL(selectedFile);
-
-    });
-
+    }, 800);
 }
 
 // ============================================================
-// DISPLAY AI RESULTS
+// EDUCATIONAL INFORMATION
+// ============================================================
+
+function getEducationalInformation(category) {
+
+    if (category === "skin") {
+
+        return {
+
+            characteristics: [
+                "Visible skin change",
+                "Color or texture variation",
+                "Possible inflammation"
+            ],
+
+            explanation:
+                "Common skin changes can have many possible causes, including irritation, inflammation, acne, eczema, infection, or other conditions.",
+
+            biology:
+                "Skin appearance can be influenced by the skin barrier, immune responses, inflammation, oil production, hair follicles, blood vessels, and microorganisms.",
+
+            mechanism:
+                "Inflammatory signals can cause changes in blood flow, immune activity, and tissue behavior that become visible on the skin.",
+
+            appearance:
+                "Changes in inflammation, pigmentation, fluid, or tissue structure can alter the color, texture, or appearance of skin."
+
+        };
+
+    }
+
+    if (category === "teeth") {
+
+        return {
+
+            characteristics: [
+                "Visible tooth or gum change",
+                "Color variation",
+                "Possible gum irritation"
+            ],
+
+            explanation:
+                "Visible dental changes can have many possible causes, including plaque buildup, staining, irritation, or other oral conditions.",
+
+            biology:
+                "Teeth and gums are influenced by enamel structure, oral bacteria, saliva, immune responses, and surrounding tissues.",
+
+            mechanism:
+                "Bacterial activity and inflammation can affect the tissues surrounding teeth and contribute to visible changes.",
+
+            appearance:
+                "Changes in plaque, staining, inflammation, or gum tissue can affect the appearance of the mouth."
+
+        };
+
+    }
+
+    return {
+
+        characteristics: [
+            "Visible eye change",
+            "Color variation",
+            "Possible irritation"
+        ],
+
+        explanation:
+            "Visible eye changes can have many possible causes, including irritation, allergies, dryness, infection, or other conditions.",
+
+        biology:
+            "Eye appearance can be influenced by blood vessels, immune responses, tears, surrounding tissues, and environmental factors.",
+
+        mechanism:
+            "Irritation and inflammation can affect blood vessels and surrounding tissues.",
+
+        appearance:
+            "Changes in blood vessel dilation, inflammation, or tear-film conditions can alter visible eye characteristics."
+
+    };
+}
+
+// ============================================================
+// DISPLAY RESULTS
 // ============================================================
 
 function displayResults(data) {
@@ -347,321 +424,71 @@ function displayResults(data) {
             ".biology-grid div:last-child p"
         );
 
-    // --------------------------------------------------------
-    // VISUAL CHARACTERISTICS
-    // --------------------------------------------------------
+    // Characteristics
 
     tags.innerHTML = "";
 
-    if (
-        Array.isArray(data.visualCharacteristics) &&
-        data.visualCharacteristics.length > 0
-    ) {
-
-        data.visualCharacteristics.forEach(
-            characteristic => {
-
-                const tag =
-                    document.createElement("span");
-
-                tag.textContent = characteristic;
-
-                tags.appendChild(tag);
-
-            }
-        );
-
-    } else {
+    data.characteristics.forEach(characteristic => {
 
         const tag =
             document.createElement("span");
 
         tag.textContent =
-            "No specific characteristics identified";
+            characteristic;
 
         tags.appendChild(tag);
 
-    }
+    });
 
-    // --------------------------------------------------------
-    // POSSIBLE EXPLANATION
-    // --------------------------------------------------------
+    // Explanation
 
-    if (data.possibleExplanation) {
+    possibleResult.innerHTML = `
 
-        possibleResult.innerHTML = `
-            <div>
-                <strong>
-                    ${escapeHTML(
-                        data.possibleExplanation
-                    )}
-                </strong>
+        <div>
 
-                <p>
-                    Educational possibility based
-                    on the submitted image and information.
-                </p>
-            </div>
-        `;
+            <strong>
+                Possible educational explanations
+            </strong>
 
-    } else {
+            <p>
+                ${data.explanation}
+            </p>
 
-        possibleResult.innerHTML = `
-            <div>
-                <strong>
-                    No specific explanation available
-                </strong>
+        </div>
 
-                <p>
-                    The AI could not provide a useful
-                    educational explanation.
-                </p>
-            </div>
-        `;
+    `;
 
-    }
-
-    // --------------------------------------------------------
-    // BADGE
-    // --------------------------------------------------------
+    // Badge
 
     qualityBadge.textContent =
-        "AI Educational Analysis";
+        "Educational Analysis";
 
-    // --------------------------------------------------------
-    // WARNINGS
-    // --------------------------------------------------------
+    // Warnings
 
-    if (warnings[0]) {
+    warnings[0].textContent =
+        "This result is educational information, not an AI diagnosis. The image has not been medically classified.";
 
-        warnings[0].textContent =
-            "AI-generated observations may be incorrect and should not be treated as confirmed medical findings.";
+    warnings[1].textContent =
+        "Corvea cannot determine what condition a person has from an image alone. A qualified healthcare professional should evaluate concerning symptoms.";
 
-    }
+    // Biology
 
-    if (warnings[1]) {
+    biologyText.textContent =
+        data.biology;
 
-        warnings[1].textContent =
-            "Corvea is an educational project, not a medical diagnostic service.";
+    biologyMechanism.textContent =
+        data.mechanism;
 
-    }
+    biologyAppearance.textContent =
+        data.appearance;
 
-    // --------------------------------------------------------
-    // BIOLOGY
-    // --------------------------------------------------------
-
-    if (data.biology) {
-
-        biologyText.textContent =
-            data.biology;
-
-    }
-
-    if (data.biologicalMechanisms) {
-
-        biologyMechanism.textContent =
-            data.biologicalMechanisms;
-
-    }
-
-    if (data.whyItLooksThisWay) {
-
-        biologyAppearance.textContent =
-            data.whyItLooksThisWay;
-
-    }
-
-    // --------------------------------------------------------
-    // SHOW RESULTS
-    // --------------------------------------------------------
+    // Show results
 
     results.classList.remove("hidden");
 
     results.scrollIntoView({
         behavior: "smooth"
     });
-
-}
-
-// ============================================================
-// HTML SAFETY
-// ============================================================
-
-function escapeHTML(text) {
-
-    const div =
-        document.createElement("div");
-
-    div.textContent = text;
-
-    return div.innerHTML;
-
-}
-
-// ============================================================
-// ANALYZE IMAGE
-// ============================================================
-
-async function analyzeImage() {
-
-    clearError();
-
-    // --------------------------------------------------------
-    // CHECK IMAGE
-    // --------------------------------------------------------
-
-    if (!selectedFile) {
-
-        showError(
-            "Please upload an image before starting the analysis."
-        );
-
-        return;
-    }
-
-    // --------------------------------------------------------
-    // GET BUTTON
-    // --------------------------------------------------------
-
-    const analyzeButton =
-        document.querySelector(".analyze-button");
-
-    analyzeButton.disabled = true;
-
-    analyzeButton.textContent =
-        "Preparing image...";
-
-    try {
-
-        console.log(
-            "Starting Corvea analysis..."
-        );
-
-        console.log(
-            "Category:",
-            selectedCategory
-        );
-
-        // ----------------------------------------------------
-        // GET USER INFORMATION
-        // ----------------------------------------------------
-
-        const concern =
-            document.getElementById(
-                "concern"
-            ).value;
-
-        const duration =
-            document.getElementById(
-                "duration"
-            ).value;
-
-        const symptoms =
-            document.getElementById(
-                "symptoms"
-            ).value;
-
-        // ----------------------------------------------------
-        // CONVERT IMAGE
-        // ----------------------------------------------------
-
-        analyzeButton.textContent =
-            "Preparing AI analysis...";
-
-        const image =
-            await getImageAsBase64();
-
-        console.log(
-            "Image successfully prepared."
-        );
-
-        // ----------------------------------------------------
-        // SEND TO BACKEND
-        // ----------------------------------------------------
-
-        analyzeButton.textContent =
-            "Analyzing image...";
-
-        const response =
-            await fetch(
-                "/api/analyze",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        category:
-                            selectedCategory,
-
-                        image:
-                            image,
-
-                        concern:
-                            concern,
-
-                        duration:
-                            duration,
-
-                        symptoms:
-                            symptoms
-
-                    })
-
-                }
-            );
-
-        // ----------------------------------------------------
-        // CHECK RESPONSE
-        // ----------------------------------------------------
-
-        if (!response.ok) {
-
-            throw new Error(
-                "The AI analysis service is not connected yet."
-            );
-
-        }
-
-        const data =
-            await response.json();
-
-        console.log(
-            "AI response:",
-            data
-        );
-
-        // ----------------------------------------------------
-        // DISPLAY RESULTS
-        // ----------------------------------------------------
-
-        displayResults(data);
-
-    } catch (error) {
-
-        console.error(
-            "Corvea analysis error:",
-            error
-        );
-
-        showError(
-            error.message ||
-            "The image could not be analyzed. Please try again."
-        );
-
-    } finally {
-
-        analyzeButton.disabled = false;
-
-        analyzeButton.textContent =
-            "Analyze Image";
-
-    }
-
 }
 
 // ============================================================
