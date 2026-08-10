@@ -62,6 +62,19 @@ imageInput.addEventListener("change", function(event) {
 
 });
 
+const cameraInput =
+    document.getElementById("cameraInput");
+
+cameraInput.addEventListener("change", function(event) {
+
+    const file = event.target.files[0];
+
+    if (file) {
+        processFile(file);
+    }
+
+});
+
 
 /* DRAG AND DROP */
 
@@ -159,6 +172,7 @@ function removeImage() {
     selectedFile = null;
 
     imageInput.value = "";
+    cameraInput.value = "";
 
     imagePreview.src = "";
 
