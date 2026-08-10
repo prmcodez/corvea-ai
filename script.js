@@ -1,42 +1,42 @@
-console.log("CORVEA HEALTH MODEL VERSION 1");
+console.log("CORVEA HEALTH EDUCATION VERSION 2");
 
 // ============================================================
-// MODEL VARIABLES
+// VARIABLES
 // ============================================================
-
-let skinModel = null;
-let skinLabels = null;
 
 let selectedCategory = "skin";
 let selectedFile = null;
 
 // ============================================================
-// DOM VARIABLES
+// DOM ELEMENTS
 // ============================================================
 
-const imageInput = document.getElementById("imageInput");
-const cameraInput = document.getElementById("cameraInput");
-const uploadArea = document.getElementById("uploadArea");
-const imagePreview = document.getElementById("imagePreview");
-const imagePreviewContainer = document.getElementById(
-    "imagePreviewContainer"
-);
-const fileName = document.getElementById("fileName");
-const fileSize = document.getElementById("fileSize");
-const uploadError = document.getElementById("uploadError");
-const results = document.getElementById("results");
+const imageInput =
+    document.getElementById("imageInput");
 
-// ============================================================
-// MODEL PATHS
-// ============================================================
+const cameraInput =
+    document.getElementById("cameraInput");
 
-const MODEL_PATHS = {
-    skin: "./models/skin/model.json"
-};
+const uploadArea =
+    document.getElementById("uploadArea");
 
-const LABEL_PATHS = {
-    skin: "./models/skin/labels.json"
-};
+const imagePreview =
+    document.getElementById("imagePreview");
+
+const imagePreviewContainer =
+    document.getElementById("imagePreviewContainer");
+
+const fileName =
+    document.getElementById("fileName");
+
+const fileSize =
+    document.getElementById("fileSize");
+
+const uploadError =
+    document.getElementById("uploadError");
+
+const results =
+    document.getElementById("results");
 
 // ============================================================
 // CATEGORY SELECTION
@@ -52,8 +52,12 @@ function selectCategory(category) {
 
             button.classList.remove("active");
 
-            if (button.dataset.category === category) {
+            if (
+                button.dataset.category === category
+            ) {
+
                 button.classList.add("active");
+
             }
 
         });
@@ -64,7 +68,10 @@ function selectCategory(category) {
             behavior: "smooth"
         });
 
-    console.log("Selected category:", selectedCategory);
+    console.log(
+        "Selected category:",
+        selectedCategory
+    );
 }
 
 // ============================================================
@@ -81,64 +88,94 @@ function scrollToAnalysis() {
 }
 
 // ============================================================
-// FILE INPUT
+// IMAGE INPUT
 // ============================================================
 
-imageInput.addEventListener("change", function (event) {
+imageInput.addEventListener(
+    "change",
+    function(event) {
 
-    const file = event.target.files[0];
+        const file =
+            event.target.files[0];
 
-    if (file) {
-        processFile(file);
+        if (file) {
+
+            processFile(file);
+
+        }
+
     }
-
-});
+);
 
 // ============================================================
 // CAMERA INPUT
 // ============================================================
 
-cameraInput.addEventListener("change", function (event) {
+cameraInput.addEventListener(
+    "change",
+    function(event) {
 
-    const file = event.target.files[0];
+        const file =
+            event.target.files[0];
 
-    if (file) {
-        processFile(file);
+        if (file) {
+
+            processFile(file);
+
+        }
+
     }
-
-});
+);
 
 // ============================================================
 // DRAG AND DROP
 // ============================================================
 
-uploadArea.addEventListener("dragover", function (event) {
+uploadArea.addEventListener(
+    "dragover",
+    function(event) {
 
-    event.preventDefault();
+        event.preventDefault();
 
-    uploadArea.classList.add("dragover");
+        uploadArea.classList.add(
+            "dragover"
+        );
 
-});
-
-uploadArea.addEventListener("dragleave", function () {
-
-    uploadArea.classList.remove("dragover");
-
-});
-
-uploadArea.addEventListener("drop", function (event) {
-
-    event.preventDefault();
-
-    uploadArea.classList.remove("dragover");
-
-    const file = event.dataTransfer.files[0];
-
-    if (file) {
-        processFile(file);
     }
+);
 
-});
+uploadArea.addEventListener(
+    "dragleave",
+    function() {
+
+        uploadArea.classList.remove(
+            "dragover"
+        );
+
+    }
+);
+
+uploadArea.addEventListener(
+    "drop",
+    function(event) {
+
+        event.preventDefault();
+
+        uploadArea.classList.remove(
+            "dragover"
+        );
+
+        const file =
+            event.dataTransfer.files[0];
+
+        if (file) {
+
+            processFile(file);
+
+        }
+
+    }
+);
 
 // ============================================================
 // PROCESS IMAGE
@@ -155,9 +192,14 @@ function processFile(file) {
         "image/webp"
     ];
 
-    const maxSize = 10 * 1024 * 1024;
+    const maxSize =
+        10 * 1024 * 1024;
 
-    if (!allowedTypes.includes(file.type)) {
+    if (
+        !allowedTypes.includes(
+            file.type
+        )
+    ) {
 
         showError(
             "Please upload a JPG, JPEG, PNG, or WebP image."
@@ -166,7 +208,9 @@ function processFile(file) {
         return;
     }
 
-    if (file.size > maxSize) {
+    if (
+        file.size > maxSize
+    ) {
 
         showError(
             "The image is too large. Maximum size is 10 MB."
@@ -177,32 +221,32 @@ function processFile(file) {
 
     selectedFile = file;
 
-    // Hide old results when a new image is selected
-    results.classList.add("hidden");
+    fileName.textContent =
+        file.name;
 
-    fileName.textContent = file.name;
-
-    fileSize.textContent = formatFileSize(file.size);
-
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-
-        imagePreview.src = event.target.result;
-
-        imagePreviewContainer.classList.remove("hidden");
-
-        uploadArea.classList.add("hidden");
-
-    };
-
-    reader.onerror = function () {
-
-        showError(
-            "The image could not be loaded. Please try another image."
+    fileSize.textContent =
+        formatFileSize(
+            file.size
         );
 
-    };
+    const reader =
+        new FileReader();
+
+    reader.onload =
+        function(event) {
+
+            imagePreview.src =
+                event.target.result;
+
+            imagePreviewContainer
+                .classList
+                .remove("hidden");
+
+            uploadArea
+                .classList
+                .add("hidden");
+
+        };
 
     reader.readAsDataURL(file);
 }
@@ -220,11 +264,17 @@ function removeImage() {
 
     imagePreview.src = "";
 
-    imagePreviewContainer.classList.add("hidden");
+    imagePreviewContainer
+        .classList
+        .add("hidden");
 
-    uploadArea.classList.remove("hidden");
+    uploadArea
+        .classList
+        .remove("hidden");
 
-    results.classList.add("hidden");
+    results
+        .classList
+        .add("hidden");
 
     clearError();
 }
@@ -235,11 +285,17 @@ function removeImage() {
 
 function formatFileSize(bytes) {
 
-    if (bytes < 1024) {
+    if (
+        bytes < 1024
+    ) {
+
         return bytes + " B";
+
     }
 
-    if (bytes < 1024 * 1024) {
+    if (
+        bytes < 1024 * 1024
+    ) {
 
         return (
             bytes / 1024
@@ -248,7 +304,8 @@ function formatFileSize(bytes) {
     }
 
     return (
-        bytes / (1024 * 1024)
+        bytes /
+        (1024 * 1024)
     ).toFixed(1) + " MB";
 }
 
@@ -258,312 +315,22 @@ function formatFileSize(bytes) {
 
 function showError(message) {
 
-    uploadError.textContent = message;
+    uploadError.textContent =
+        message;
 
-    uploadError.classList.remove("hidden");
+    uploadError
+        .classList
+        .remove("hidden");
 }
 
 function clearError() {
 
-    uploadError.textContent = "";
-
-    uploadError.classList.add("hidden");
-}
-
-// ============================================================
-// LOAD SKIN MODEL
-// ============================================================
-
-async function loadSkinModel() {
-
-    if (skinModel !== null) {
-        return skinModel;
-    }
-
-    console.log("Loading Corvea skin model...");
-
-    if (typeof tf === "undefined") {
-
-        throw new Error(
-            "TensorFlow.js did not load. Please check your internet connection and make sure TensorFlow.js is loaded before script.js."
-        );
-    }
-
-    skinModel = await tf.loadLayersModel(
-        MODEL_PATHS.skin
-    );
-
-    console.log("Corvea skin model loaded.");
-
-    console.log(
-        "Model input shape:",
-        skinModel.inputs[0].shape
-    );
-
-    console.log(
-        "Model output shape:",
-        skinModel.outputs[0].shape
-    );
-
-    return skinModel;
-}
-
-// ============================================================
-// LOAD LABELS
-// ============================================================
-
-async function loadSkinLabels() {
-
-    if (skinLabels !== null) {
-        return skinLabels;
-    }
-
-    console.log("Loading skin labels...");
-
-    const response = await fetch(
-        LABEL_PATHS.skin
-    );
-
-    if (!response.ok) {
-
-        throw new Error(
-            "Could not load models/skin/labels.json"
-        );
-    }
-
-    skinLabels = await response.json();
-
-    console.log(
-        "Skin labels loaded:",
-        skinLabels
-    );
-
-    return skinLabels;
-}
-
-// ============================================================
-// PREPROCESS IMAGE
-// ============================================================
-
-function preprocessImage(image) {
-
-    return tf.tidy(() => {
-
-        let tensor = tf.browser.fromPixels(image);
-
-        tensor = tf.image.resizeBilinear(
-            tensor,
-            [224, 224]
-        );
-
-        tensor = tensor
-            .toFloat()
-            .div(255.0);
-
-        tensor = tensor.expandDims(0);
-
-        return tensor;
-
-    });
-}
-
-// ============================================================
-// RUN SKIN MODEL
-// ============================================================
-
-async function runSkinModel(image) {
-
-    const model = await loadSkinModel();
-
-    const labels = await loadSkinLabels();
-
-    const input = preprocessImage(image);
-
-    let output = null;
-
-    try {
-
-        output = model.predict(input);
-
-        const probabilities = await output.data();
-
-        const resultsArray = Array.from(
-            probabilities
-        );
-
-        const predictions = resultsArray
-            .map((probability, index) => ({
-
-                index: index,
-
-                label:
-                    labels[index] ||
-                    `Class ${index}`,
-
-                probability: probability
-
-            }))
-            .sort(
-                (a, b) =>
-                    b.probability -
-                    a.probability
-            );
-
-        return predictions;
-
-    } finally {
-
-        input.dispose();
-
-        if (
-            output &&
-            typeof output.dispose === "function"
-        ) {
-
-            output.dispose();
-        }
-    }
-}
-
-// ============================================================
-// DISPLAY RESULTS
-// ============================================================
-
-function displaySkinResults(predictions) {
-
-    const tags = document.querySelector(
-        ".result-card .tags"
-    );
-
-    const possibleResult = document.querySelector(
-        ".possible-result"
-    );
-
-    const qualityBadge = document.querySelector(
-        ".quality-badge"
-    );
-
-    const warnings = document.querySelectorAll(
-        ".result-warning"
-    );
-
-    // --------------------------------------------------------
-    // CLEAR OLD TAGS
-    // --------------------------------------------------------
-
-    tags.innerHTML = "";
-
-    // --------------------------------------------------------
-    // TOP PREDICTIONS
-    // --------------------------------------------------------
-
-    const topPredictions = predictions.slice(0, 3);
-
-    topPredictions.forEach(prediction => {
-
-        const tag = document.createElement("span");
-
-        const percentage = (
-            prediction.probability * 100
-        ).toFixed(1);
-
-        tag.textContent =
-            `${prediction.label} (${percentage}%)`;
-
-        tags.appendChild(tag);
-
-    });
-
-    // --------------------------------------------------------
-    // MODEL BADGE
-    // --------------------------------------------------------
-
-    qualityBadge.textContent =
-        "Corvea Skin Model";
-
-    // --------------------------------------------------------
-    // MAIN RESULT
-    // --------------------------------------------------------
-
-    const best = predictions[0];
-
-    if (!best) {
-
-        possibleResult.innerHTML = `
-            <strong>
-                No result available
-            </strong>
-
-            <p>
-                The model did not return a prediction.
-            </p>
-        `;
-
-        results.classList.remove("hidden");
-
-        return;
-    }
-
-    const score = (
-        best.probability * 100
-    ).toFixed(1);
-
-    possibleResult.innerHTML = `
-        <div>
-
-            <strong>
-                ${best.label}
-            </strong>
-
-            <p>
-                Model score: ${score}%
-            </p>
-
-        </div>
-    `;
-
-    // --------------------------------------------------------
-    // WARNINGS
-    // --------------------------------------------------------
-
-    if (warnings[0]) {
-
-        warnings[0].textContent =
-            "The displayed predictions come from Corvea's trained computer-vision model and represent model outputs, not confirmed medical findings.";
-
-    }
-
-    if (warnings[1]) {
-
-        warnings[1].textContent =
-            "Corvea is an educational project. Model predictions may be incorrect and must not be interpreted as a medical diagnosis.";
-
-    }
-
-    // --------------------------------------------------------
-    // BIOLOGY
-    // --------------------------------------------------------
-
-    const biologyText = document.querySelector(
-        ".biology-card > p"
-    );
-
-    if (biologyText) {
-
-        biologyText.textContent =
-            "Visible skin characteristics can be influenced by biological processes involving the skin barrier, immune system, inflammation, follicles, microorganisms, and other tissues.";
-
-    }
-
-    // --------------------------------------------------------
-    // SHOW RESULTS
-    // --------------------------------------------------------
-
-    results.classList.remove("hidden");
-
-    results.scrollIntoView({
-        behavior: "smooth"
-    });
+    uploadError.textContent =
+        "";
+
+    uploadError
+        .classList
+        .add("hidden");
 }
 
 // ============================================================
@@ -583,73 +350,39 @@ async function analyzeImage() {
         return;
     }
 
-    const analyzeButton = document.querySelector(
-        ".analyze-button"
-    );
+    const analyzeButton =
+        document.querySelector(
+            ".analyze-button"
+        );
 
-    analyzeButton.disabled = true;
+    analyzeButton.disabled =
+        true;
 
     analyzeButton.textContent =
-        "Loading AI model...";
+        "Preparing analysis...";
 
     try {
 
-        console.log(
-            "Starting Corvea health analysis..."
-        );
-
-        // ----------------------------------------------------
-        // CURRENTLY ONLY SKIN IS CONNECTED
-        // ----------------------------------------------------
-
-        if (selectedCategory !== "skin") {
-
-            throw new Error(
-                "Only the skin model is currently connected. Teeth and eye models will be added later."
-            );
-        }
-
-        // ----------------------------------------------------
-        // GET IMAGE
-        // ----------------------------------------------------
-
-        const image = document.getElementById(
-            "imagePreview"
-        );
-
-        if (!image.complete || image.naturalWidth === 0) {
-
-            throw new Error(
-                "The selected image has not finished loading. Please try again."
-            );
-        }
-
-        // ----------------------------------------------------
-        // RUN MODEL
-        // ----------------------------------------------------
+        /*
+         * The actual AI vision API will be
+         * connected here.
+         *
+         * Do NOT put a private API key
+         * directly inside this JavaScript file.
+         */
 
         analyzeButton.textContent =
             "Analyzing image...";
 
-        const predictions =
-            await runSkinModel(image);
-
-        console.log(
-            "Skin model predictions:",
-            predictions
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    1000
+                )
         );
 
-        // ----------------------------------------------------
-        // DISPLAY RESULTS
-        // ----------------------------------------------------
-
-        displaySkinResults(
-            predictions
-        );
-
-        console.log(
-            "Corvea health analysis completed."
-        );
+        displayEducationalResult();
 
     } catch (error) {
 
@@ -659,13 +392,13 @@ async function analyzeImage() {
         );
 
         showError(
-            error.message ||
             "The image could not be analyzed. Please try again."
         );
 
     } finally {
 
-        analyzeButton.disabled = false;
+        analyzeButton.disabled =
+            false;
 
         analyzeButton.textContent =
             "Analyze Image";
@@ -673,7 +406,88 @@ async function analyzeImage() {
 }
 
 // ============================================================
+// DISPLAY EDUCATIONAL RESULT
+// ============================================================
+
+function displayEducationalResult() {
+
+    const tags =
+        document.querySelector(
+            ".result-card .tags"
+        );
+
+    const possibleResult =
+        document.querySelector(
+            ".possible-result"
+        );
+
+    const qualityBadge =
+        document.querySelector(
+            ".quality-badge"
+        );
+
+    const warnings =
+        document.querySelectorAll(
+            ".result-warning"
+        );
+
+    const biologyText =
+        document.querySelector(
+            ".biology-card > p"
+        );
+
+    tags.innerHTML = "";
+
+    const tag =
+        document.createElement(
+            "span"
+        );
+
+    tag.textContent =
+        "AI analysis connection pending";
+
+    tags.appendChild(tag);
+
+    qualityBadge.textContent =
+        "Educational Preview";
+
+    possibleResult.innerHTML = `
+        <div>
+
+            <strong>
+                AI analysis will appear here
+            </strong>
+
+            <p>
+                The image-analysis service
+                has not been connected yet.
+            </p>
+
+        </div>
+    `;
+
+    warnings[0].textContent =
+        "Corvea will use AI to identify observable visual characteristics and provide educational possibilities.";
+
+    warnings[1].textContent =
+        "AI-generated information may be incorrect and must not be interpreted as a medical diagnosis.";
+
+    biologyText.textContent =
+        "Corvea will explain the biological processes that may be associated with observable characteristics, including inflammation, skin-barrier function, microorganisms, tissues, and other relevant mechanisms.";
+
+    results
+        .classList
+        .remove("hidden");
+
+    results.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// ============================================================
 // INITIALIZATION
 // ============================================================
 
-console.log("Corvea JavaScript initialized.");
+console.log(
+    "Corvea JavaScript initialized."
+);
