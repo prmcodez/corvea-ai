@@ -26,13 +26,17 @@ button {
     cursor: pointer;
 }
 
-.navbar {
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+header {
     height: 76px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 6%;
-    background: rgba(255,255,255,0.95);
+    background: rgba(255, 255, 255, 0.95);
     border-bottom: 1px solid #e8e8ef;
     position: sticky;
     top: 0;
@@ -67,6 +71,7 @@ nav a {
     color: #50586b;
     text-decoration: none;
     font-size: 14px;
+    transition: color 0.2s ease;
 }
 
 nav a:hover {
@@ -90,6 +95,13 @@ nav a:hover {
     background: #5839cf;
 }
 
+.primary-button:disabled,
+.analyze-button:disabled,
+.nav-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
 .secondary-button {
     border: 1px solid #d9d9e4;
     background: white;
@@ -99,6 +111,14 @@ nav a:hover {
     font-weight: 600;
 }
 
+.secondary-button:hover {
+    background: #f5f4fa;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
 .hero {
     min-height: 650px;
     padding: 80px 7%;
@@ -107,7 +127,11 @@ nav a:hover {
     align-items: center;
     gap: 60px;
     background:
-        radial-gradient(circle at 80% 30%, #ece7ff, transparent 35%),
+        radial-gradient(
+            circle at 80% 30%,
+            #ece7ff,
+            transparent 35%
+        ),
         #fbfbfe;
 }
 
@@ -151,6 +175,10 @@ nav a:hover {
     color: #777f90;
 }
 
+/* =====================================================
+   HERO VISUAL
+===================================================== */
+
 .hero-visual {
     display: flex;
     justify-content: center;
@@ -161,7 +189,7 @@ nav a:hover {
     height: 500px;
     background: white;
     border-radius: 35px;
-    box-shadow: 0 25px 70px rgba(60,50,120,0.12);
+    box-shadow: 0 25px 70px rgba(60, 50, 120, 0.12);
     display: grid;
     place-items: center;
 }
@@ -186,7 +214,7 @@ nav a:hover {
     background: #c89576;
     left: 92px;
     top: 110px;
-    opacity: .5;
+    opacity: 0.5;
 }
 
 .marker {
@@ -194,7 +222,7 @@ nav a:hover {
     background: white;
     padding: 8px 13px;
     border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     font-size: 13px;
     font-weight: 700;
     display: flex;
@@ -224,6 +252,10 @@ nav a:hover {
     right: -55px;
 }
 
+/* =====================================================
+   SECTIONS
+===================================================== */
+
 section {
     padding: 100px 7%;
 }
@@ -243,6 +275,10 @@ section {
     color: #6c7485;
 }
 
+/* =====================================================
+   CATEGORY CARDS
+===================================================== */
+
 .category-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -255,12 +291,12 @@ section {
     background: white;
     padding: 32px;
     border-radius: 22px;
-    transition: .25s;
+    transition: 0.25s;
 }
 
 .category-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 50px rgba(50,40,100,.08);
+    box-shadow: 0 20px 50px rgba(50, 40, 100, 0.08);
 }
 
 .category-icon {
@@ -288,6 +324,10 @@ section {
 .category-card strong {
     color: #6b4ce6;
 }
+
+/* =====================================================
+   ANALYSIS
+===================================================== */
 
 .analysis-section {
     background: #f1f0f7;
@@ -323,18 +363,26 @@ section {
     border-radius: 12px;
 }
 
+.category-option:hover {
+    border-color: #6b4ce6;
+}
+
 .category-option.active {
     background: #eeeaff;
     border-color: #6b4ce6;
     color: #6b4ce6;
 }
 
+/* =====================================================
+   UPLOAD
+===================================================== */
+
 .upload-area {
     border: 2px dashed #d8d5e3;
     border-radius: 18px;
     padding: 45px 20px;
     text-align: center;
-    transition: .2s;
+    transition: 0.2s;
 }
 
 .upload-area.dragover {
@@ -356,12 +404,23 @@ section {
     color: #6c7485;
 }
 
-.upload-area span {
+.upload-area > span {
     display: block;
     color: #8b91a0;
     font-size: 12px;
     margin: 10px 0 20px;
 }
+
+.upload-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* =====================================================
+   IMAGE PREVIEW
+===================================================== */
 
 .preview-container {
     margin-top: 20px;
@@ -398,6 +457,14 @@ section {
     padding: 0;
 }
 
+.remove-button:hover {
+    text-decoration: underline;
+}
+
+/* =====================================================
+   FORM
+===================================================== */
+
 label {
     display: block;
     margin: 18px 0 7px;
@@ -421,6 +488,10 @@ textarea {
 .muted {
     color: #777f90;
 }
+
+/* =====================================================
+   SAFETY
+===================================================== */
 
 .safety-box {
     display: flex;
@@ -448,17 +519,29 @@ textarea {
     font-size: 14px;
 }
 
+/* =====================================================
+   ANALYZE BUTTON
+===================================================== */
+
 .analyze-button {
     width: 100%;
     padding: 17px;
     font-size: 16px;
 }
 
+/* =====================================================
+   ERRORS
+===================================================== */
+
 .error-message {
     color: #c64252;
     margin-top: 10px;
     font-size: 14px;
 }
+
+/* =====================================================
+   RESULTS
+===================================================== */
 
 .results {
     margin-top: 30px;
@@ -545,6 +628,10 @@ textarea {
     color: #777f90;
 }
 
+/* =====================================================
+   BIOLOGY
+===================================================== */
+
 .biology-card {
     margin-top: 20px;
 }
@@ -569,6 +656,10 @@ textarea {
     margin-top: 5px;
 }
 
+/* =====================================================
+   HOW IT WORKS
+===================================================== */
+
 .steps {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -592,6 +683,10 @@ textarea {
     color: #707889;
     margin-top: 8px;
 }
+
+/* =====================================================
+   CONDITIONS
+===================================================== */
 
 .conditions-section {
     background: white;
@@ -622,6 +717,10 @@ textarea {
 .condition-card p {
     color: #6d7585;
 }
+
+/* =====================================================
+   RESEARCH
+===================================================== */
 
 .research-section {
     background: #17192b;
@@ -661,6 +760,10 @@ textarea {
     margin-top: 8px;
 }
 
+/* =====================================================
+   FOOTER
+===================================================== */
+
 footer {
     background: #11121e;
     color: white;
@@ -680,9 +783,17 @@ footer {
     max-width: 550px;
 }
 
+/* =====================================================
+   UTILITY
+===================================================== */
+
 .hidden {
     display: none !important;
 }
+
+/* =====================================================
+   TABLET
+===================================================== */
 
 @media (max-width: 900px) {
 
@@ -702,8 +813,11 @@ footer {
     .steps {
         grid-template-columns: 1fr 1fr;
     }
-
 }
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media (max-width: 600px) {
 
@@ -711,7 +825,7 @@ footer {
         padding: 70px 5%;
     }
 
-    .navbar {
+    header {
         padding: 0 5%;
     }
 
@@ -719,13 +833,25 @@ footer {
         display: none;
     }
 
+    .hero {
+        padding: 60px 5%;
+    }
+
     .hero h1 {
         font-size: 44px;
+    }
+
+    .hero-text > p {
+        font-size: 16px;
     }
 
     .face-card {
         width: 100%;
         height: 400px;
+    }
+
+    .face-placeholder {
+        transform: scale(0.85);
     }
 
     .category-grid,
@@ -751,5 +877,4 @@ footer {
     footer {
         flex-direction: column;
     }
-
 }
