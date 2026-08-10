@@ -232,46 +232,103 @@ function clearError() {
    ANALYSIS
 ------------------------- */
 
-function analyzeImage() {
+async function analyzeImage() {
 
     clearError();
 
-
     if (!selectedFile) {
-
         showError(
             "Please upload an image before starting the analysis."
         );
-
         return;
-
     }
 
+    const analyzeButton =
+        document.querySelector(".analyze-button");
 
-    results.classList.remove("hidden");
+    analyzeButton.disabled = true;
+    analyzeButton.textContent = "Analyzing...";
 
-    results.scrollIntoView({
-        behavior: "smooth"
-    });
+    try {
 
+        // Load the uploaded image
+        const image = document.getElementById("imagePreview");
 
-    /*
-        IMPORTANT:
+        // Load MobileNet
+        const model = await mobilenet.load();
 
-        This is currently a DEMONSTRATION result.
+        // Classify the image
+        const predictions = await model.classify(image);
 
-        The uploaded image is real and the upload system works,
-        but no medical AI model is being called yet.
+        console.log("MobileNet predictions:", predictions);
 
-        The next development phase will connect this interface
-        to a secure backend and computer-vision model.
-    */
+        // Show the results section
+        results.classList.remove("hidden");
 
+        results.scrollIntoView({
+            behavior: "smooth"
+        });
+
+        // Get the result elements
+        const tags =
+            document.querySelector(".result-card .tags");
+
+        const possibleResult =
+            document.querySelector(".possible-result");
+
+        // Clear previous results
+        tags.innerHTML = "";
+        possibleResult.innerHTML = "";
+
+        // Display the top predictions
+        predictions.slice(0, 3).forEach(prediction => {
+
+            const tag = document.createElement("span");
+
+            tag.textContent = prediction.className;
+
+            tags.appendChild(tag);
+
+        });
+
+        // Show the highest-confidence classification
+        if (predictions.length > 0) {
+
+            const topPrediction = predictions[0];
+
+            const percentage =
+                Math.round(topPrediction.probability * 100);
+
+            possibleResult.innerHTML = `
+                <div>
+                    <strong>
+                        ${topPrediction.className}
+                    </strong>
+
+                    <p>
+                        General image classification result
+                    </p>
+                </div>
+
+                <div class="confidence">
+                    ${percentage}%
+                </div>
+            `;
+
+        }
+
+    } catch (error) {
+
+        console.error("Analysis error:", error);
+
+        showError(
+            "The image could not be analyzed. Please try another image."
+        );
+
+    } finally {
+
+        analyzeButton.disabled = false;
+        analyzeButton.textContent = "Analyze Image";
+
+    }
 }
-
-
-/* -------------------------
-   INITIAL STATE
-------------------------- */
-
-selectCategory("skin");
